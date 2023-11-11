@@ -1,2 +1,0 @@
-# UTMDash
-This is readme.
