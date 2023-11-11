@@ -170,9 +170,9 @@ class _LoginPageState extends State<LoginPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Tab(icon: Image.asset("../assets/images/facebook.png")),
-              Tab(icon: Image.asset("../assets/images/twitter.png")),
-              Tab(icon: Image.asset("../assets/images/github.png")),
+              Tab(icon: Image.asset("assets/images/facebook.png")),
+              Tab(icon: Image.asset("assets/images/twitter.png")),
+              Tab(icon: Image.asset("assets/images/github.png")),
             ],
           )
         ],
