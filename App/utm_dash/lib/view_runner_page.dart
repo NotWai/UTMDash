@@ -4,8 +4,7 @@ import 'request_box.dart';
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
-@override
+  @override
   MyAppState createState() => MyAppState();
 }
 
@@ -22,7 +21,7 @@ class MyAppState extends State<MyApp> {
         'date': '18 Oct 2023 16:00',
         'fee': '+RM 4.00',
       },
-       {
+      {
         'name': 'Suhaila Binti Amin',
         'last_tracking_num': '8876',
         'destination': 'ANGKASA - Block S14, KTC',
@@ -32,7 +31,7 @@ class MyAppState extends State<MyApp> {
       {
         'name': 'Armin Bin Erwin',
         'last_tracking_num': '8942',
-        'destination': 'ANGKASA - Block H12, KRP',
+        'destination': 'ANGKASA - Block H12, KTF',
         'date': '18 Oct 2023 9:00',
         'fee': '+RM 1.00',
       },
@@ -46,7 +45,7 @@ class MyAppState extends State<MyApp> {
       {
         'name': 'Usman Bin Zain',
         'last_tracking_num': '4689',
-        'destination': 'ANGKASA - Block H12, KRP',
+        'destination': 'ANGKASA - Block H12, KTF',
         'date': '18 Oct 2023 9:00',
         'fee': '+RM 1.00',
       },
@@ -60,7 +59,7 @@ class MyAppState extends State<MyApp> {
       {
         'name': 'Adam Bin Zakaria',
         'last_tracking_num': '8743',
-        'destination': 'ANGKASA - Block H12, KRP',
+        'destination': 'ANGKASA - Block H12, KTF',
         'date': '18 Oct 2023 9:00',
         'fee': '+RM 1.00',
       },
@@ -83,8 +82,7 @@ class MyAppState extends State<MyApp> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            for (var data in boxData)
-              RequestBox(data, context, isAccepted),
+            for (var data in boxData) RequestBox(data, context, isAccepted),
           ],
         ),
         backgroundColor: const Color.fromARGB(255, 212, 174, 174),
