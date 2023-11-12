@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test2/CustLoginPage.dart';
-import 'package:test2/AdminLoginPage.dart';
-import 'package:test2/HubLoginPage.dart';
+import 'package:utm_dash/CustLoginPage.dart';
+import 'package:utm_dash/AdminLoginPage.dart';
+import 'package:utm_dash/HubLoginPage.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -27,15 +27,16 @@ class HomePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text ('Login',
-    style: TextStyle(
-      color: Colors.black,
-      fontSize: 24,
-      // Add your desired text style properties here
-      fontWeight: FontWeight.bold,
-      // Other properties...
-    ),
-  ),
+              title: Text(
+                'Login',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  // Add your desired text style properties here
+                  fontWeight: FontWeight.bold,
+                  // Other properties...
+                ),
+              ),
               onTap: () {
                 _showLoginMenu(context);
               },
@@ -47,7 +48,8 @@ class HomePage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color(0xFFBE1C2D),
           image: DecorationImage(
-            image: AssetImage("assets/images/your_image.png"), // Replace with your actual image path
+            image: AssetImage(
+                "assets/images/your_image.png"), // Replace with your actual image path
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Color(0xFFBE1C2D).withOpacity(0.2),
@@ -55,26 +57,26 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-child: Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 "assets/images/UTMDASH_LOGO.png", // Replace with your actual welcome image path
                 height: 600, // Set the desired height
-                width: 600,  // Set the desired width
+                width: 600, // Set the desired width
               ),
               SizedBox(height: 20),
-        Transform.translate(
-          offset: Offset(0, -100),
-          child: Text(
-            'Welcome to Our App!',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
+              Transform.translate(
+                offset: Offset(0, -100),
+                child: Text(
+                  'Welcome to Our App!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
                 ),
               ),
-        ),
             ],
           ),
         ),

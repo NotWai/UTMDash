@@ -61,6 +61,7 @@ flutter:
     - assets/images/facebook.png
     - assets/images/twitter.png
     - assets/images/github.png
+    - assets/images/UTMDASH_LOGO.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
