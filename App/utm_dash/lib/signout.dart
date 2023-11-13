@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/reusable_widgets/reusable_widgets.dart';
-import 'package:utm_dash/screen/signup.dart';
+import 'package:utm_dash/reusable_widgets.dart';
+import 'package:utm_dash/signup.dart';
 
 class SignOut extends StatefulWidget {
   const SignOut({super.key});

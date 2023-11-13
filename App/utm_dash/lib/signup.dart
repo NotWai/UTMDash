@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/reusable_widgets/reusable_widgets.dart';
-import 'package:utm_dash/screen/signout.dart';
+import 'package:utm_dash/reusable_widgets.dart';
+import 'package:utm_dash/signout.dart';
 //import 'package:utm_dash/screen/signout.dart';
 //import 'package:utm_dash/screen/testSignOut.dart';
 //import 'package:utm_dash/utils/color_utils.dart';
