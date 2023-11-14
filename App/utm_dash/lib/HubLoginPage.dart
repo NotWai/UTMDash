@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utm_dash/forgetPassword.dart';
 
 
 class HubLoginPage extends StatefulWidget {
@@ -156,7 +157,9 @@ class _HubLoginPageState extends State<HubLoginPage> {
           ],
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ForgetPassword()));
+          },
           child: _buildGreyText("I forgot my password"),
         ),
       ],
