@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:utm_dash/forgetPassword.dart';
 //import 'package:test2/hub_page.dart'; // Adjust the import based on the actual file name
 
 
@@ -153,7 +153,9 @@ class _LoginPageState extends State<CustLoginPage> {
           ],
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ForgetPassword()));
+          },
           child: _buildGreyText("I forgot my password"),
         ),
       ],
