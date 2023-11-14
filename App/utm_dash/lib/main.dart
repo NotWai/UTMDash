@@ -3,12 +3,13 @@ import 'package:utm_dash/CustLoginPage.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/request_box.dart';
 import 'package:utm_dash/request_details.dart';
+import 'package:utm_dash/Signup.dart';
 
 void main() {
   runApp(const MyApp());
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: MyApp(),
+    home: SignUp(),
   ));
 }
 
