@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:utm_dash/CustLoginPage.dart';
 import 'package:utm_dash/AdminLoginPage.dart';
 import 'package:utm_dash/HubLoginPage.dart';
+import 'package:utm_dash/signup.dart';
+import 'package:utm_dash/view_runner_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -40,6 +42,39 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 _showLoginMenu(context);
               },
+              
+            ),
+             ListTile(
+              title: Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  // Add your desired text style properties here
+                  fontWeight: FontWeight.bold,
+                  // Other properties...
+                ),
+              ),
+              onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));
+              },
+              
+            ),
+            ListTile(
+              title: Text(
+                'View Page',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  // Add your desired text style properties here
+                  fontWeight: FontWeight.bold,
+                  // Other properties...
+                ),
+              ),
+              onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
+              },
+              
             ),
           ],
         ),
