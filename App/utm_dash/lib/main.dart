@@ -4,6 +4,7 @@ import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/request_box.dart';
 import 'package:utm_dash/request_details.dart';
 import 'package:utm_dash/signup.dart';
+import 'package:utm_dash/viewCustomerPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.red),
-      home: HomePage(),
+      home: CustomerPage(),
       debugShowCheckedModeBanner: false,
     );
   }

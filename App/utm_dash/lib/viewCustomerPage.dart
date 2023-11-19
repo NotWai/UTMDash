@@ -35,10 +35,10 @@ class _CustomerPageState extends State<CustomerPage> {
         children: <Widget>[
           SizedBox(height: 20),
           Icon(
-                Icons.notifications,
-                color: Color.fromARGB(162, 255, 0, 0),
-                size: 30,
-              ),
+            Icons.notifications,
+            color: Color.fromARGB(162, 255, 0, 0),
+            size: 30,
+          ),
           SizedBox(height: 20),
           Text(
             'Notifications',
@@ -75,18 +75,24 @@ class _CustomerPageState extends State<CustomerPage> {
               ),
             ),
           ),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           Container(
             width: 200,
             child: ElevatedButton(
               onPressed: () async {},
               style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 0, 0),
                 shape: const StadiumBorder(),
                 elevation: 20,
-                shadowColor: Theme.of(context).primaryColor,
+                shadowColor: Color.fromARGB(255, 255, 0, 0),
                 minimumSize: const Size.fromHeight(50),
               ),
-              child: Text('Request A driver Now!'),
+              child: Text(
+                'Request A driver Now!',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           SizedBox(height: 90),
