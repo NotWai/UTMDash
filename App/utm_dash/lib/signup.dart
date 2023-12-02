@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utm_dash/CustLoginPage.dart';
 import 'package:utm_dash/reusable_widgets.dart';
 import 'package:utm_dash/signout.dart';
 //import 'package:utm_dash/screen/signout.dart';
@@ -89,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 signUpSignInLogoutButton(context, true, () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const SignOut()));
+                      MaterialPageRoute(builder: (context) => const CustLoginPage()));
                 })
               ],
             ),

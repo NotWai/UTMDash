@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/forgetPassword.dart';
+import 'package:utm_dash/viewCustomerPage.dart';
 //import 'package:test2/hub_page.dart'; // Adjust the import based on the actual file name
 
 
@@ -167,6 +168,10 @@ class _LoginPageState extends State<CustLoginPage> {
       onPressed: () {
         debugPrint("Email : ${emailController.text}");
         debugPrint("Password : ${passwordController.text}");
+        Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CustomerPage()),
+                  );
       },
       style: ElevatedButton.styleFrom(
         primary: Color(0xFFBE1C2D),
