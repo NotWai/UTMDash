@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/CustLoginPage.dart';
 import 'package:utm_dash/HomePage.dart';
-import 'package:utm_dash/request_box.dart';
-import 'package:utm_dash/request_details.dart';
-import 'package:utm_dash/signup.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyApp(),
-  ));
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
