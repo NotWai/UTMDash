@@ -7,10 +7,9 @@ import 'package:utm_dash/signup.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 
 void main() {
-  runApp(const MyApp());
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: SignUp(),
+    home: MyApp(),
   ));
 }
 

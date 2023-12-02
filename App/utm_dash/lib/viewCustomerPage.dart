@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:utm_dash/signup.dart';
 
 class CustomerPage extends StatefulWidget {
   @override
@@ -29,6 +33,41 @@ class _CustomerPageState extends State<CustomerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        color: Colors.red[800],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: GNav(
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Colors.red.shade400,
+            padding: EdgeInsets.all(16),
+            tabs: [
+              GButton(
+                gap: 8,
+                icon: Icons.home,
+                text: 'Home',
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUp()),
+                  );
+                },
+              ),
+              GButton(
+                gap: 8,
+                icon: Icons.notifications,
+                text: 'Notifications',
+              ),
+              GButton(
+                gap: 8,
+                icon: Icons.person_2,
+                text: 'Profile',
+              ),
+            ],
+          ),
+        ),
+      ),
       appBar: CustomAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -52,15 +91,15 @@ class _CustomerPageState extends State<CustomerPage> {
           SizedBox(height: 10),
           Expanded(
             child: Container(
-              margin: EdgeInsets.all(20), // Add margin for the border radius
+              margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Color.fromARGB(151, 255, 0, 0),
-                borderRadius: BorderRadius.circular(15), // Add border radius
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black, // Shadow color
-                    blurRadius: 20, // Shadow blur radius
-                    offset: Offset(0, 5), // Shadow offset
+                    color: Colors.black,
+                    blurRadius: 20,
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),
