@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/screen/edit_profile.dart';
-import 'package:utm_dash/screen/signout.dart';
+import 'package:utm_dash/HomePage.dart';
+import 'package:utm_dash/edit_profile.dart';
+import 'package:utm_dash/signout.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:utm_dash/signup.dart';
+import 'package:utm_dash/viewCustomerPage.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,6 +18,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        color: Colors.red[800],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: GNav(
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Colors.red.shade400,
+            padding: EdgeInsets.all(16),
+            tabs: [
+              GButton(
+                active: false,
+                gap: 8,
+                icon: Icons.home,
+                text: 'Home',
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CustomerPage()),
+                  );
+                },
+              ),
+              GButton(
+                gap: 8,
+                icon: Icons.notifications,
+                text: 'Notifications',
+              ),
+              GButton(
+                active: true,
+                onPressed: (){
+                 
+                },
+                gap: 8,
+                icon: Icons.person_2,
+                text: 'Profile',
+                
+              ),
+            ],
+          ),
+        ),
+      ),
         body: SingleChildScrollView(
             child: Column(
       mainAxisSize: MainAxisSize.max,
@@ -360,7 +406,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ElevatedButton(
                 onPressed: () async {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const SignOut()));
+                      MaterialPageRoute(builder: (context) => SignOut()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFBE1C2D),

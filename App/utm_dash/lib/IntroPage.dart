@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test2/CustLoginPage.dart';
-import 'package:test2/HomePage.dart';
+import 'package:utm_dash/CustLoginPage.dart';
+import 'package:utm_dash/HomePage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class IntroPage extends StatefulWidget {

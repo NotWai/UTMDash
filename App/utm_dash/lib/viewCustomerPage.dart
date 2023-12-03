@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:utm_dash/profile_screen.dart';
 import 'package:utm_dash/signup.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -60,6 +61,12 @@ class _CustomerPageState extends State<CustomerPage> {
                 text: 'Notifications',
               ),
               GButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
                 gap: 8,
                 icon: Icons.person_2,
                 text: 'Profile',

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
+import 'package:utm_dash/IntroPage.dart';
 import 'package:utm_dash/request_box.dart';
 import 'package:utm_dash/request_details.dart';
 import 'package:utm_dash/signup.dart';
