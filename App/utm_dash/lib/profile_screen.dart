@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/edit_profile.dart';
+import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/signout.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:utm_dash/signup.dart';
@@ -15,6 +16,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,8 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
             child: ElevatedButton(
                 onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignOut()));
+                  _auth.signOut();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFBE1C2D),

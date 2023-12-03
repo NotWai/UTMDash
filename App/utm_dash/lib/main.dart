@@ -1,10 +1,13 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/IntroPage.dart';
+import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/request_box.dart';
 import 'package:utm_dash/request_details.dart';
+import 'package:utm_dash/screens/wrapper.dart';
+import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/signup.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,23 +23,19 @@ void main() async {
       projectId: "utmdash-a9abf",
     ),
   );
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: HomePage(),
-      debugShowCheckedModeBanner: false,
+    return StreamProvider<UserClass?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        home: Wrapper(),
+      ),
     );
   }
 }
+

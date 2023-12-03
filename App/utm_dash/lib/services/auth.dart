@@ -1,22 +1,21 @@
 // ignore_for_file: avoid_print, unused_element
 
-//import 'package:fire1/models/user.dart';
-//import 'package:fire1/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:utm_dash/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //create user object
-  //UserClass? _userFromFirebaseUser(User? user) {
-  //  return user != null ? UserClass(uid: user.uid) : null;
-  //}
+  UserClass? _userFromFirebaseUser(User? user) {
+    return user != null ? UserClass(uid: user.uid) : null;
+  }
 
   //Auth changes stream
 
-  //Stream<UserClass?> get user {
-  //  return _auth.authStateChanges().map(_userFromFirebaseUser);
-  //}
+  Stream<UserClass?> get user {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
+  }
 
   //with email and pass
 
@@ -25,7 +24,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      //return _userFromFirebaseUser(user);
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -39,9 +38,21 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      //create document for user
-      //await DatabaseService(uid: user!.uid).updateUserData('0', 'New member', 100);
-      //return _userFromFirebaseUser(user);
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //Sign in anon
+
+
+  Future signInAnon() async {
+    try {
+      UserCredential result = await _auth.signInAnonymously();
+      User? user = result.user;
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;

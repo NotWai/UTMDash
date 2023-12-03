@@ -9,33 +9,6 @@ Image logoWidget(String imageName) {
   );
 }
 
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller) {
-  return TextField(
-      controller: controller,
-      obscureText: isPasswordType,
-      enableSuggestions: !isPasswordType,
-      autocorrect: !isPasswordType,
-      cursorColor: Colors.white,
-      style: TextStyle(color: Colors.white.withOpacity(0.9)),
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          icon,
-          color: Colors.white,
-        ),
-        labelText: text,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-        filled: true,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        fillColor: Colors.black.withOpacity(0.2),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
-      ),
-      keyboardType: isPasswordType
-          ? TextInputType.visiblePassword
-          : TextInputType.emailAddress);
-}
 
 Container signUpSignInLogoutButton(
     BuildContext context, bool isLogin, Function onTap) {
@@ -45,8 +18,8 @@ Container signUpSignInLogoutButton(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
     child: ElevatedButton(
-      onPressed: () {
-        onTap();
+      onPressed: ()  {
+         onTap();
       },
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -63,5 +36,59 @@ Container signUpSignInLogoutButton(
             color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
       ),
     ),
+  );
+}
+
+
+TextFormField reusableTextField(
+    String text,
+    IconData icon,
+    bool isPasswordType,
+    TextEditingController controller,
+    {bool isEmail = false}) {
+  return TextFormField(
+    controller: controller,
+    obscureText: isPasswordType,
+    enableSuggestions: !isPasswordType,
+    autocorrect: !isPasswordType,
+    cursorColor: Colors.white,
+    style: TextStyle(color: Colors.white.withOpacity(0.9)),
+    decoration: InputDecoration(
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white,
+      ),
+      labelText: text,
+      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+      filled: true,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      fillColor: Colors.black.withOpacity(0.2),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+      ),
+    ),
+    keyboardType: isEmail
+        ? TextInputType.emailAddress
+        : (isPasswordType
+            ? TextInputType.visiblePassword
+            : TextInputType.text),
+    // Validation logic for email
+    validator: (value) {
+      if (isEmail) {
+        if (value!.isEmpty) {
+          return 'Please enter an email';
+        } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+      } else if (isPasswordType) {
+        if (value!.isEmpty) {
+          return 'Please enter a password';
+        } else if (value.length < 6) {
+          return 'Password must be at least 6 characters';
+        }
+      }
+      return null;
+    },
   );
 }

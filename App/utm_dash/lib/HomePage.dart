@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
           color: Color(0xFFBE1C2D),
           image: DecorationImage(
             image: AssetImage(
-                "assets/images/your_image.png"), // Replace with your actual image path
+                "assets/images/UTMDASH_LOGO.png"), // Replace with your actual image path
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Color(0xFFBE1C2D).withOpacity(0.2),

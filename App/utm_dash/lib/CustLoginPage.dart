@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/forgetPassword.dart';
+import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 //import 'package:test2/hub_page.dart'; // Adjust the import based on the actual file name
-
 
 class CustLoginPage extends StatefulWidget {
   const CustLoginPage({super.key});
@@ -12,12 +12,13 @@ class CustLoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<CustLoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Color myColor;
   late Size mediaSize;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool rememberUser = false;
-  
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _LoginPageState extends State<CustLoginPage> {
       decoration: BoxDecoration(
         color: myColor,
         image: DecorationImage(
-          image: const AssetImage("assets/images/bg.png"),
+          image: const AssetImage("assets/images/UTMDASH_LOGO.png"),
           fit: BoxFit.cover,
           colorFilter:
               ColorFilter.mode(myColor.withOpacity(0.2), BlendMode.dstATop),
@@ -62,12 +63,12 @@ class _LoginPageState extends State<CustLoginPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Transform.translate(
-          offset: Offset(0, -70),
-          child: Image.asset(
-          "assets/images/UTMDASH_LOGO.png", // Update with the actual path to your image
-          height: 400, // Set the desired height
-          width: 400,  // Set the desired width
-          ),
+            offset: Offset(0, -70),
+            child: Image.asset(
+              "assets/images/UTMDASH_LOGO.png", // Update with the actual path to your image
+              height: 400, // Set the desired height
+              width: 400, // Set the desired width
+            ),
           ),
         ],
       ),
@@ -93,28 +94,31 @@ class _LoginPageState extends State<CustLoginPage> {
   }
 
   Widget _buildForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Welcome",
-          style: TextStyle(
-              color: myColor, fontSize: 32, fontWeight: FontWeight.w500),
-        ),
-        _buildGreyText("Please login with your information"),
-        const SizedBox(height: 60),
-        _buildGreyText("Email address"),
-        _buildInputField(emailController),
-        const SizedBox(height: 40),
-        _buildGreyText("Password"),
-        _buildInputField(passwordController, isPassword: true),
-        const SizedBox(height: 20),
-        _buildRememberForgot(),
-        const SizedBox(height: 20),
-        _buildLoginButton(),
-        const SizedBox(height: 20),
-        //_buildSignUpLink(),
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Welcome",
+            style: TextStyle(
+                color: myColor, fontSize: 32, fontWeight: FontWeight.w500),
+          ),
+          _buildGreyText("Please login with your information"),
+          const SizedBox(height: 60),
+          _buildGreyText("Email address"),
+          _buildInputField(emailController),
+          const SizedBox(height: 40),
+          _buildGreyText("Password"),
+          _buildInputField(passwordController, isPassword: true),
+          const SizedBox(height: 20),
+          _buildRememberForgot(),
+          const SizedBox(height: 20),
+          _buildLoginButton(),
+          const SizedBox(height: 20),
+          //_buildSignUpLink(),
+        ],
+      ),
     );
   }
 
@@ -127,12 +131,28 @@ class _LoginPageState extends State<CustLoginPage> {
 
   Widget _buildInputField(TextEditingController controller,
       {isPassword = false}) {
-    return TextField(
+    return TextFormField(
       controller: controller,
-      decoration: InputDecoration(
-        suffixIcon: isPassword ? Icon(Icons.remove_red_eye) : Icon(Icons.done),
-      ),
       obscureText: isPassword,
+      validator: (value) {
+        if (isPassword) {
+          if (value!.isEmpty) {
+            return 'Please enter your password';
+          } else if (value.length < 6) {
+            return 'Password must be at least 6 characters';
+          }
+        } else {
+          if (value!.isEmpty) {
+            return 'Please enter an email';
+          } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+            return 'Please enter a valid email';
+          }
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          // Existing decoration...
+          ),
     );
   }
 
@@ -155,7 +175,8 @@ class _LoginPageState extends State<CustLoginPage> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> ForgetPassword()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ForgetPassword()));
           },
           child: _buildGreyText("I forgot my password"),
         ),
@@ -165,13 +186,21 @@ class _LoginPageState extends State<CustLoginPage> {
 
   Widget _buildLoginButton() {
     return ElevatedButton(
-      onPressed: () {
-        debugPrint("Email : ${emailController.text}");
-        debugPrint("Password : ${passwordController.text}");
-        Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CustomerPage()),
-                  );
+      onPressed: () async {
+        if (_formKey.currentState!.validate()) {
+          debugPrint("Email : ${emailController.text}");
+          debugPrint("Password : ${passwordController.text}");
+          dynamic result = await _auth.signIn(
+            emailController.text.trim(),
+            passwordController.text.trim(),
+          );
+          if (result == null) {
+            print('Error: Invalid credentials');
+          } else {
+            print(result.toString());
+            Navigator.pop(context);
+          }
+        }
       },
       style: ElevatedButton.styleFrom(
         primary: Color(0xFFBE1C2D),
@@ -183,5 +212,4 @@ class _LoginPageState extends State<CustLoginPage> {
       child: const Text("LOGIN"),
     );
   }
-
 }
