@@ -21,47 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        color: Colors.red[800],
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          child: GNav(
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabBackgroundColor: Colors.red.shade400,
-            padding: EdgeInsets.all(16),
-            tabs: [
-              GButton(
-                active: false,
-                gap: 8,
-                icon: Icons.home,
-                text: 'Home',
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CustomerPage()),
-                  );
-                },
-              ),
-              GButton(
-                gap: 8,
-                icon: Icons.notifications,
-                text: 'Notifications',
-              ),
-              GButton(
-                active: true,
-                onPressed: (){
-                 
-                },
-                gap: 8,
-                icon: Icons.person_2,
-                text: 'Profile',
-                
-              ),
-            ],
-          ),
-        ),
-      ),
         body: SingleChildScrollView(
             child: Column(
       mainAxisSize: MainAxisSize.max,

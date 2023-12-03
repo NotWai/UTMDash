@@ -34,47 +34,6 @@ class _CustomerPageState extends State<CustomerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        color: Colors.red[800],
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          child: GNav(
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabBackgroundColor: Colors.red.shade400,
-            padding: EdgeInsets.all(16),
-            tabs: [
-              GButton(
-                gap: 8,
-                icon: Icons.home,
-                text: 'Home',
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUp()),
-                  );
-                },
-              ),
-              GButton(
-                gap: 8,
-                icon: Icons.notifications,
-                text: 'Notifications',
-              ),
-              GButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                },
-                gap: 8,
-                icon: Icons.person_2,
-                text: 'Profile',
-              ),
-            ],
-          ),
-        ),
-      ),
       appBar: CustomAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

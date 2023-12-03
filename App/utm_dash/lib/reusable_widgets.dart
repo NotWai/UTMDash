@@ -67,6 +67,11 @@ TextFormField reusableTextField(
         borderRadius: BorderRadius.circular(30.0),
         borderSide: const BorderSide(width: 0, style: BorderStyle.none),
       ),
+      errorStyle: const TextStyle(color: Colors.white), // Set error text color to white
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.white), // Set error border color to white
+        borderRadius: BorderRadius.circular(30.0),
+      ),
     ),
     keyboardType: isEmail
         ? TextInputType.emailAddress

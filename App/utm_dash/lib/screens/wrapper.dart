@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/models/user.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/screens/customer_wrapper.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key});
@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return HomePage();
     } else {
-      return CustomerPage();
+      return const CustomerWrapper();
     }
   }
 }
