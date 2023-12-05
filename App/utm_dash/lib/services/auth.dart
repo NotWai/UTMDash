@@ -47,7 +47,6 @@ class AuthService {
 
   //Sign in anon
 
-
   Future signInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
@@ -67,6 +66,14 @@ class AuthService {
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      print("Failed to send password reset email: ${e.message}");
     }
   }
 }

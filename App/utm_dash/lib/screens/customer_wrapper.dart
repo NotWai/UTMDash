@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/HomePage.dart';
-import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/profile_screen.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 import 'package:provider/provider.dart';

@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:utm_dash/services/auth.dart';
 import 'emailSent.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -9,6 +13,7 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   String email = '';
   final _formKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +36,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     'Please enter your email to receive forget message:',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red[300],
-                    ),
+                        fontSize: 20,
+                        color: Colors.red[700],
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
                   // Email Input Field with label and example email
@@ -46,7 +51,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       hintText: 'e.g. example@gmail.com',
                     ),
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
                         return 'Email is required. Please Enter your email';
                       }
                       return null;
@@ -58,9 +64,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   Container(
                     width: 180,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.push(
+                          await _auth.resetPassword(email);
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => EmailSent()),
@@ -84,4 +91,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       ),
     );
   }
+}
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.red,
+    ),
+  );
 }
