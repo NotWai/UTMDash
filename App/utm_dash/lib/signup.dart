@@ -104,7 +104,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     signUpSignInLogoutButton(context, true, () async {
                       if (_formKey.currentState!.validate()) {
-                        dynamic result = await _auth.register(_emailTextController.text.trim(), _passwordTextController.text.trim());
+                        dynamic result = await _auth.register(_emailTextController.text.trim(), _passwordTextController.text.trim(), _fullNameTextController.text, _phoneNumTextController.text);
                         if (result == null) {
                           print('Invalid login');
                         } else{
