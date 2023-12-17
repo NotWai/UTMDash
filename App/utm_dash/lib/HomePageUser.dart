@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:utm_dash/models/user.dart';
 
 class HomePageUser extends StatefulWidget {
   const HomePageUser({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class _HomePageUserState extends State<HomePageUser> {
     super.initState();
     textController = TextEditingController();
     textFieldFocusNode = FocusNode();
+    trackParcelList();
   }
 
   @override
@@ -28,6 +32,96 @@ class _HomePageUserState extends State<HomePageUser> {
     textFieldFocusNode.dispose();
 
     super.dispose();
+  }
+
+  Future<void> trackParcel(String trackingNumber) async {
+    // TODO: Fetch parcel data from Firebase based on trackingNumber
+    try {
+      var snapshot = await FirebaseFirestore.instance
+          .collection("Parcels")
+          .where("trackingID", isEqualTo: trackingNumber)
+          .get();
+      var docs = snapshot.docs;
+
+      if (docs.isNotEmpty) {
+        // Parcel found, you can access data using snapshot.data()
+
+        // Check if alr not exist in user profile
+        final user = Provider.of<UserClass>(context, listen: false);
+        final userRef =
+            FirebaseFirestore.instance.collection('Users').doc(user.uid);
+        final userData = await userRef.get();
+        try {
+          final trackingList = userData.get('trackingId') as List;
+
+          if (trackingList.contains(trackingNumber)) {
+            return print('Parcel alr edsist in profile');
+          }
+        } catch (e) {
+          print('Error fetching parcel data: $e');
+        }
+
+        // Insert into user profile
+        await userRef.update({
+          'trackingId': FieldValue.arrayUnion([trackingNumber])
+        });
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Parcel Details'),
+              content: Text('Parcel data: ${docs.first.get("fromName")}'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the pop-up
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+
+        setState(() {
+          // Update your widget's state with the fetched data if needed
+          // Example: parcelData = snapshot.data();
+        });
+      }
+    } catch (e) {
+      print('Error fetching parcel data: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> trackParcelList() async {
+    // Check if alr not exist in user profile
+    final user = Provider.of<UserClass>(context, listen: false);
+    final userRef =
+        FirebaseFirestore.instance.collection('Users').doc(user.uid);
+    final userData = await userRef.get();
+    try {
+      // Get list tracking id
+      final trackingList = userData.get('trackingId') as List;
+      // Get user tracking list
+      var snapshot = await FirebaseFirestore.instance
+          .collection("Parcels")
+          .where("trackingID", whereIn: trackingList)
+          .get();
+      var docs = snapshot.docs;
+
+      if (docs.isNotEmpty) {
+        print('dune');
+        final docList = docs.map((element) => element.data());
+        print(docList.toList());
+        return docList.toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Error fetching parcel data: $e');
+      return [];
+    }
   }
 
   @override
@@ -49,8 +143,8 @@ class _HomePageUserState extends State<HomePageUser> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              width: 393,
-              height: 373,
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height * 0.45,
               decoration: BoxDecoration(
                 color: Color(0xFFBE1C2D),
                 borderRadius: BorderRadius.only(
@@ -96,6 +190,7 @@ class _HomePageUserState extends State<HomePageUser> {
                       onTap: () async {
                         // Navigate to P6EditProfilePage
                         // context.pushNamed('P6EditProfilePage');
+                        await trackParcel(textController.text);
                       },
                       child: Container(
                         width: double.infinity,
@@ -113,7 +208,8 @@ class _HomePageUserState extends State<HomePageUser> {
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -139,12 +235,15 @@ class _HomePageUserState extends State<HomePageUser> {
                                       errorBorder: InputBorder.none,
                                       focusedErrorBorder: InputBorder.none,
                                     ),
-                                    style: Theme.of(context).textTheme.bodyText1,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                     // validator: _model.textControllerValidator.asValidator(context),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // Add some space between TextFormField and Icon
+                              SizedBox(
+                                  width:
+                                      8), // Add some space between TextFormField and Icon
                               InkWell(
                                 splashColor: Colors.transparent,
                                 focusColor: Colors.transparent,
@@ -156,8 +255,10 @@ class _HomePageUserState extends State<HomePageUser> {
                                 },
                                 child: Icon(
                                   Icons.search_rounded,
-                                  color:
-                                      Theme.of(context).textTheme.caption!.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .color,
                                   size: 18,
                                 ),
                               ),
@@ -171,7 +272,7 @@ class _HomePageUserState extends State<HomePageUser> {
                     padding: EdgeInsetsDirectional.fromSTEB(20, 35, 20, 0),
                     child: ElevatedButton(
                       onPressed: () {
-                        print('Button pressed ...');
+                        trackParcel(textController.text);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
@@ -225,8 +326,8 @@ class _HomePageUserState extends State<HomePageUser> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 20, 0, 0),
                                 child: Text(
                                   'Parcel Number',
                                   style: Theme.of(context)
@@ -243,13 +344,14 @@ class _HomePageUserState extends State<HomePageUser> {
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding:
-                                      EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 0, 0, 0),
                                   child: Text(
                                     'MYNJV00376041305',
                                     style: Theme.of(context)

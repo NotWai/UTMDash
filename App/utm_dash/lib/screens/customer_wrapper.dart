@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:utm_dash/HomePageUser.dart';
 import 'package:utm_dash/profile_screen.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      CustomerPage(),
+      HomePageUser(),
       CustomerPage(),
       ProfileScreen(),
     ];
