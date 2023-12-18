@@ -55,8 +55,25 @@ class _HomePageUserState extends State<HomePageUser> {
           final trackingList = userData.get('trackingId') as List;
 
           if (trackingList.contains(trackingNumber)) {
-            return print('Parcel alr edsist in profile');
-          }
+            print('Parcel already exists in profile');
+            return showDialog(
+              context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parcel Details'),
+                content: Text('Your parcel already arrived.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the pop-up
+                    },
+                    child: Text('OK'),
+           ),
+                ],
+              );
+            },
+          );
+        }
         } catch (e) {
           print('Error fetching parcel data: $e');
         }
@@ -66,44 +83,67 @@ class _HomePageUserState extends State<HomePageUser> {
           'trackingId': FieldValue.arrayUnion([trackingNumber])
         });
 
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Parcel Details'),
-              content: Text('Parcel data: ${docs.first.get("fromName")}'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the pop-up
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+              showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Parcel Details'),
+            content: Text('Parcel data:\nArrived: ${docs.first.get("arrived")}\nFrom: ${docs.first.get("fromName")}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the pop-up
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+
 
         setState(() {
           // Update your widget's state with the fetched data if needed
           // Example: parcelData = snapshot.data();
         });
-      }
+      } else {
+      print('Parcel not found');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Parcel Not Found'),
+            content: Text('No parcel found with the given tracking number.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the pop-up
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    
     } catch (e) {
       print('Error fetching parcel data: $e');
     }
   }
 
   Future<List<Map<String, dynamic>>> trackParcelList() async {
-    // Check if alr not exist in user profile
+   try { // Check if alr not exist in user profile
     final user = Provider.of<UserClass>(context, listen: false);
-    final userRef =
-        FirebaseFirestore.instance.collection('Users').doc(user.uid);
+    final userRef = FirebaseFirestore.instance.collection('Users').doc(user.uid);
     final userData = await userRef.get();
+
+    if(userData.exists) {
     try {
       // Get list tracking id
-      final trackingList = userData.get('trackingId') as List;
+      final trackingList = userData.get('trackingId') as List<String>;
       // Get user tracking list
+      if (trackingList.isNotEmpty) {
       var snapshot = await FirebaseFirestore.instance
           .collection("Parcels")
           .where("trackingID", whereIn: trackingList)
@@ -111,18 +151,30 @@ class _HomePageUserState extends State<HomePageUser> {
       var docs = snapshot.docs;
 
       if (docs.isNotEmpty) {
-        print('dune');
-        final docList = docs.map((element) => element.data());
-        print(docList.toList());
-        return docList.toList();
+        print('done');
+        final docList = docs.map((element) => element.data() ?? {}).toList();
+        print(docList);
+        return docList;
       } else {
+        return [];
+      }
+      } else {
+         // Handle the case where the 'trackingId' field is empty
         return [];
       }
     } catch (e) {
       print('Error fetching parcel data: $e');
       return [];
     }
+  } else {
+    // Handle the case where the user document does not exist
+    return [];
   }
+   } catch (e) {
+    print('Error fetching user data: $e');
+    return [];
+  }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +214,7 @@ class _HomePageUserState extends State<HomePageUser> {
                     child: Text(
                       'Track Parcel',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w800,
                           ),
@@ -175,7 +227,7 @@ class _HomePageUserState extends State<HomePageUser> {
                       child: Text(
                         'Enter parcel number',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.white,
                             ),
                       ),
                     ),
@@ -223,7 +275,7 @@ class _HomePageUserState extends State<HomePageUser> {
                                     autofocus: true,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                      labelText: 'tracking number',
+                                      labelText: '',
                                       labelStyle: Theme.of(context)
                                           .inputDecorationTheme
                                           .labelStyle,
@@ -275,8 +327,8 @@ class _HomePageUserState extends State<HomePageUser> {
                         trackParcel(textController.text);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                        primary: Colors.black,
+                        padding: EdgeInsetsDirectional.fromSTEB(50, 20, 50, 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
