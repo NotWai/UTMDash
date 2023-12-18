@@ -13,9 +13,14 @@ class DatabaseService {
 
   // update Function:
 
-  Future updateUserData(String fullName, String phoneNumber, String emailAddress) async {
-    return await myCollection.doc(uid).set(
-        {'fullName': fullName, 'phoneNumber': phoneNumber, 'emailAddress': emailAddress});
+  Future updateUserData(
+      String fullName, String phoneNumber, String emailAddress, String role) async {
+    return await myCollection.doc(uid).set({
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
+      'emailAddress': emailAddress,
+      'Role': role,
+    });
   }
 
   List<UserObject> _objectFromSnapshot(QuerySnapshot snapshot) {
@@ -50,5 +55,24 @@ class DatabaseService {
 
   Stream<UserData> get userData {
     return myCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Future<String?> fetchedUserRoleFromFirestore() async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+          .instance
+          .collection('Users')
+          .doc(uid)
+          .get();
+
+      if (userDoc.exists) {
+        return userDoc.data()?['Role'];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching user role: $e');
+      return null;
+    }
   }
 }

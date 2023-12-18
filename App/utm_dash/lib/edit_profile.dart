@@ -504,7 +504,7 @@ class _EditProfileState extends State<EditProfile> {
                         await DatabaseService(uid: user.uid).updateUserData(
                             _fullNameController.text,
                             _phoneNumberController.text,
-                            _currEmail);
+                            _currEmail, 'normal');
                         Navigator.pop(context);
                       }
                     },
