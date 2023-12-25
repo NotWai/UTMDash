@@ -1,10 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/services/f_database.dart';
 
 class HomePageUser extends StatefulWidget {
   const HomePageUser({Key? key}) : super(key: key);
@@ -16,123 +17,104 @@ class HomePageUser extends StatefulWidget {
 class _HomePageUserState extends State<HomePageUser> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late TextEditingController textController;
-  late FocusNode textFieldFocusNode;
+  final TextEditingController textController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    textController = TextEditingController();
-    textFieldFocusNode = FocusNode();
-    trackParcelList();
-  }
+  // Future<void> trackParcel(String trackingNumber) async {
+  //   try {
+  //     var snapshot = await FirebaseFirestore.instance
+  //         .collection("Parcels")
+  //         .where("trackingID", isEqualTo: trackingNumber)
+  //         .get();
+  //     var docs = snapshot.docs;
 
-  @override
-  void dispose() {
-    // Dispose of any resources if needed.
-    textController.dispose();
-    textFieldFocusNode.dispose();
+  //     if (docs.isNotEmpty) {
+  //       // Parcel found, you can access data using snapshot.data()
 
-    super.dispose();
-  }
+  //       // Check if alr not exist in user profile
+  //       final user = Provider.of<UserClass>(context, listen: false);
+  //       final userRef =
+  //           FirebaseFirestore.instance.collection('Users').doc(user.uid);
+  //       final userData = await userRef.get();
+  //       try {
+  //         final trackingList = userData.get('trackingId') as List;
 
-  Future<void> trackParcel(String trackingNumber) async {
-    // TODO: Fetch parcel data from Firebase based on trackingNumber
-    try {
-      var snapshot = await FirebaseFirestore.instance
-          .collection("Parcels")
-          .where("trackingID", isEqualTo: trackingNumber)
-          .get();
-      var docs = snapshot.docs;
+  //         if (trackingList.contains(trackingNumber)) {
+  //           print('Parcel already exists in profile');
+  //           return showDialog(
+  //             context: context,
+  //             builder: (BuildContext context) {
+  //               return AlertDialog(
+  //                 title: const Text('Parcel Details'),
+  //                 content: const Text('Your parcel already arrived.'),
+  //                 actions: [
+  //                   TextButton(
+  //                     onPressed: () {
+  //                       Navigator.of(context).pop(); // Close the pop-up
+  //                     },
+  //                     child: const Text('OK'),
+  //                   ),
+  //                 ],
+  //               );
+  //             },
+  //           );
+  //         }
+  //       } catch (e) {
+  //         print('Error fetching parcel data: $e');
+  //       }
 
-      if (docs.isNotEmpty) {
-        // Parcel found, you can access data using snapshot.data()
+  //       // Insert into user profile
+  //       await userRef.update({
+  //         'trackingId': FieldValue.arrayUnion([trackingNumber])
+  //       });
 
-        // Check if alr not exist in user profile
-        final user = Provider.of<UserClass>(context, listen: false);
-        final userRef =
-            FirebaseFirestore.instance.collection('Users').doc(user.uid);
-        final userData = await userRef.get();
-        try {
-          final trackingList = userData.get('trackingId') as List;
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: const Text('Parcel Details'),
+  //             content: Text(
+  //                 'Parcel data:\nArrived: ${docs.first.get("arrived")}\nFrom: ${docs.first.get("fromName")}'),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop(); // Close the pop-up
+  //                 },
+  //                 child: const Text('OK'),
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
 
-          if (trackingList.contains(trackingNumber)) {
-            print('Parcel already exists in profile');
-            return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Parcel Details'),
-                  content: const Text('Your parcel already arrived.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the pop-up
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        } catch (e) {
-          print('Error fetching parcel data: $e');
-        }
-
-        // Insert into user profile
-        await userRef.update({
-          'trackingId': FieldValue.arrayUnion([trackingNumber])
-        });
-
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Parcel Details'),
-              content: Text(
-                  'Parcel data:\nArrived: ${docs.first.get("arrived")}\nFrom: ${docs.first.get("fromName")}'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the pop-up
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-
-        setState(() {
-          // Update your widget's state with the fetched data if needed
-          // Example: parcelData = snapshot.data();
-        });
-      } else {
-        print('Parcel not found');
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Parcel Not Found'),
-              content:
-                  const Text('No parcel found with the given tracking number.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the pop-up
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print('Error fetching parcel data: $e');
-    }
-  }
+  //       setState(() {
+  //         // Update your widget's state with the fetched data if needed
+  //         // Example: parcelData = snapshot.data();
+  //       });
+  //     } else {
+  //       print('Parcel not found');
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: const Text('Parcel Not Found'),
+  //             content:
+  //                 const Text('No parcel found with the given tracking number.'),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop(); // Close the pop-up
+  //                 },
+  //                 child: const Text('OK'),
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching parcel data: $e');
+  //   }
+  // }
 
   Future<List<Map<String, dynamic>>> trackParcelList() async {
     try {
@@ -156,8 +138,7 @@ class _HomePageUserState extends State<HomePageUser> {
 
             if (docs.isNotEmpty) {
               print('done');
-              final docList =
-                  docs.map((element) => element.data() ?? {}).toList();
+              final docList = docs.map((element) => element.data()).toList();
               print(docList);
               return docList;
             } else {
@@ -190,6 +171,66 @@ class _HomePageUserState extends State<HomePageUser> {
           systemStatusBarContrastEnforced: true,
         ),
       );
+    }
+
+    final user = Provider.of<UserClass>(context, listen: false);
+    final DatabaseService firestoreAccess = DatabaseService(uid: user.uid);
+    void trackParcel(String trackingID) async {
+      try {
+        DocumentSnapshot? parcelSnapshot =
+            await firestoreAccess.trackParcel(trackingID);
+
+        if (parcelSnapshot != null) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parcel Details'),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Tracking ID: ${parcelSnapshot['trackingID']}'),
+                    Text('From: ${parcelSnapshot['fromName']}'),
+                    Text('Arrived in: ${parcelSnapshot['arrived']}'),
+                    
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // Show a message if the parcel is not found
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parcel Not Found'),
+                content:
+                    const Text('No parcel found with the given tracking number.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } catch (e) {
+        print('Error fetching parcel: $e');
+      }
     }
 
     return Scaffold(
@@ -246,11 +287,7 @@ class _HomePageUserState extends State<HomePageUser> {
                       focusColor: Colors.transparent,
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onTap: () async {
-                        // Navigate to P6EditProfilePage
-                        // context.pushNamed('P6EditProfilePage');
-                        await trackParcel(textController.text);
-                      },
+                      onTap: () async {},
                       child: Container(
                         width: double.infinity,
                         height: 50,
@@ -278,7 +315,6 @@ class _HomePageUserState extends State<HomePageUser> {
                                       8, 0, 8, 0),
                                   child: TextFormField(
                                     controller: textController,
-                                    focusNode: textFieldFocusNode,
                                     autofocus: true,
                                     obscureText: false,
                                     decoration: InputDecoration(
@@ -316,7 +352,7 @@ class _HomePageUserState extends State<HomePageUser> {
                                   Icons.search_rounded,
                                   color: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .bodySmall!
                                       .color,
                                   size: 18,
                                 ),
@@ -335,7 +371,7 @@ class _HomePageUserState extends State<HomePageUser> {
                         trackParcel(textController.text);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
+                        backgroundColor: Colors.black,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             50, 20, 50, 20),
                         shape: RoundedRectangleBorder(
@@ -344,7 +380,7 @@ class _HomePageUserState extends State<HomePageUser> {
                       ),
                       child: Text(
                         'Track Parcel',
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               color: Colors.white,
                             ),
                       ),

@@ -1,4 +1,4 @@
-// ignore_for_file: await_only_futures, non_constant_identifier_names, unused_element
+// ignore_for_file: await_only_futures, non_constant_identifier_names, unused_element, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:utm_dash/models/user.dart';
@@ -11,10 +11,13 @@ class DatabaseService {
   final CollectionReference myCollection =
       FirebaseFirestore.instance.collection('Users');
 
+  final CollectionReference parcelsCollection =
+      FirebaseFirestore.instance.collection('Parcels');
+
   // update Function:
 
-  Future updateUserData(
-      String fullName, String phoneNumber, String emailAddress, String role) async {
+  Future updateUserData(String fullName, String phoneNumber,
+      String emailAddress, String role) async {
     return await myCollection.doc(uid).set({
       'fullName': fullName,
       'phoneNumber': phoneNumber,
@@ -57,13 +60,27 @@ class DatabaseService {
     return myCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
+  Future<DocumentSnapshot?> trackParcel(String trackingNumber) async {
+    try {
+      QuerySnapshot querySnapshot = await parcelsCollection
+          .where('trackingID', isEqualTo: trackingNumber)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching parcel: $e');
+      return null;
+    }
+  }
+
   Future<String?> fetchedUserRoleFromFirestore() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
-          .instance
-          .collection('Users')
-          .doc(uid)
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
       if (userDoc.exists) {
         return userDoc.data()?['Role'];
