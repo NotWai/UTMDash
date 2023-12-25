@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,13 +63,13 @@ class _HomePageUserState extends State<HomePageUser> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parcel Details'),
-                content: Text('Your parcel already arrived.'),
+                content: const Text('Your parcel already arrived.'),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Close the pop-up
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
            ),
                 ],
               );
@@ -94,7 +96,7 @@ class _HomePageUserState extends State<HomePageUser> {
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the pop-up
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -113,13 +115,13 @@ class _HomePageUserState extends State<HomePageUser> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Parcel Not Found'),
-            content: Text('No parcel found with the given tracking number.'),
+            content: const Text('No parcel found with the given tracking number.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the pop-up
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -192,12 +194,12 @@ class _HomePageUserState extends State<HomePageUser> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height * 0.45,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFFBE1C2D),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
@@ -210,10 +212,10 @@ class _HomePageUserState extends State<HomePageUser> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 80, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(20, 80, 0, 0),
                     child: Text(
                       'Track Parcel',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w800,
@@ -221,19 +223,19 @@ class _HomePageUserState extends State<HomePageUser> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.00, 0.00),
+                    alignment: const AlignmentDirectional(-1.00, 0.00),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(20, 30, 0, 0),
                       child: Text(
                         'Enter parcel number',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                               color: Colors.white,
                             ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -249,7 +251,7 @@ class _HomePageUserState extends State<HomePageUser> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               blurRadius: 3,
                               color: Color(0x33000000),
@@ -261,13 +263,13 @@ class _HomePageUserState extends State<HomePageUser> {
                         ),
                         child: Padding(
                           padding:
-                              EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+                              const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       8, 0, 8, 0),
                                   child: TextFormField(
                                     controller: textController,
@@ -288,12 +290,12 @@ class _HomePageUserState extends State<HomePageUser> {
                                       focusedErrorBorder: InputBorder.none,
                                     ),
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyLarge,
                                     // validator: _model.textControllerValidator.asValidator(context),
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                   width:
                                       8), // Add some space between TextFormField and Icon
                               InkWell(
@@ -321,14 +323,14 @@ class _HomePageUserState extends State<HomePageUser> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 35, 20, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(20, 35, 20, 0),
                     child: ElevatedButton(
                       onPressed: () {
                         trackParcel(textController.text);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black,
-                        padding: EdgeInsetsDirectional.fromSTEB(50, 20, 50, 20),
+                        padding: const EdgeInsetsDirectional.fromSTEB(50, 20, 50, 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -350,9 +352,9 @@ class _HomePageUserState extends State<HomePageUser> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(-1.00, -1.00),
+                    alignment: const AlignmentDirectional(-1.00, -1.00),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(20, 30, 0, 0),
                       child: Text(
                         'My Parcels',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -363,7 +365,7 @@ class _HomePageUserState extends State<HomePageUser> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                     child: Container(
                       //width: 400,
                       height: 153,
@@ -371,146 +373,150 @@ class _HomePageUserState extends State<HomePageUser> {
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 20, 0, 0),
-                                child: Text(
-                                  'Parcel Number',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .caption!
-                                            .color,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                            child: Row(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 0, 0, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      20, 20, 0, 0),
                                   child: Text(
-                                    'MYNJV00376041305',
+                                    'Parcel Number',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
                                         .copyWith(
-                                          fontWeight: FontWeight.w600,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .caption!
+                                              .color,
                                         ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        100, 0, 0, 0),
-                                    child: Text(
-                                      'Done',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                            color: Colors.green,
-                                          ),
-                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                            indent: 10,
-                            endIndent: 10,
-                            color: Color(0x9B5A5C60),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'From',
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        20, 0, 0, 0),
+                                    child: Text(
+                                      'MYNJV00376041305',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText1!
                                           .copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .color,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 5, 0, 0),
+                                  ),
+                                  Align(
+                                    alignment: const AlignmentDirectional(1.00, 0.00),
+                                    child: Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          100, 0, 0, 0),
                                       child: Text(
-                                        'Akmal',
+                                        'Done',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: Colors.green,
+                                            ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    100, 0, 20, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Arrived',
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                            color: Theme.of(context)
+                            ),
+                            const Divider(
+                              thickness: 1,
+                              indent: 10,
+                              endIndent: 10,
+                              color: Color(0x9B5A5C60),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'From',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .caption!
+                                                    .color,
+                                              ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                              0, 5, 0, 0),
+                                          child: Text(
+                                            'Akmal',
+                                            style: Theme.of(context)
                                                 .textTheme
-                                                .caption!
-                                                .color,
+                                                .bodyText1,
                                           ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 5, 0, 0),
-                                      child: Text(
-                                        'Tue, 20 September 2023',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      100, 0, 20, 0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Arrived',
                                         textAlign: TextAlign.start,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .color,
+                                            ),
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0, 5, 0, 0),
+                                        child: Text(
+                                          'Tue, 20 September 2023',
+                                          textAlign: TextAlign.start,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
