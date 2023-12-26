@@ -1,9 +1,7 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 import 'package:utm_dash/API/firebase_api.dart';
+import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/models/user.dart';
-import 'package:utm_dash/screens/wrapper.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +13,7 @@ import 'package:utm_dash/viewCustomerPage.dart';
 //import 'package:utm_dash/request_details.dart';
 //import 'package:utm_dash/signup.dart';
 //import 'package:utm_dash/viewCustomerPage.dart';
+import 'package:utm_dash/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -39,11 +38,11 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
-        home: Wrapper(),
         navigatorKey: navigatorKey,
         routes: {
           '/notification_screen': (context) => CustomerPage(),
         },
+        home: SplashScreen(),
       ),
     );
   }
