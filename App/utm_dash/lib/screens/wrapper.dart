@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/screens/hub_wrapper.dart';
 import 'package:utm_dash/services/f_database.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/screens/customer_wrapper.dart';
-import 'package:utm_dash/viewHubPage.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
@@ -16,7 +16,7 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<UserClass?>(context);
     print(user);
     if (user == null) {
-      return HomePage();
+      return const HomePage();
     } else {
       return FutureBuilder<String?>(
         future: DatabaseService(uid: user.uid).fetchedUserRoleFromFirestore(),
@@ -34,13 +34,11 @@ class Wrapper extends StatelessWidget {
                 if (userRole == 'normal') {
                   return const CustomerWrapper();
                 } else if (userRole == 'Hub') {
-                  return const ViewHubPage();
+                  return const HubWrapper();
                 } else {
-                  // Handle other cases or errors
                   return const Text('Unhandled user role');
                 }
               } else {
-                // Handle case where user role couldn't be fetched
                 return const Text('User role not available');
               }
             }
