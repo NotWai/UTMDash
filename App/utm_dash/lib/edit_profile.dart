@@ -53,8 +53,7 @@ class _EditProfileState extends State<EditProfile> {
             size: 30,
           ),
           onPressed: () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            Navigator.pop(context);
           },
         ),
         title: const Text('Edit Profile',
