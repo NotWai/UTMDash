@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/forgetPassword.dart';
 import 'package:utm_dash/services/auth.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
+//import 'package:utm_dash/viewCustomerPage.dart';
 //import 'package:test2/hub_page.dart'; // Adjust the import based on the actual file name
 
-class CustLoginPage extends StatefulWidget {
-  const CustLoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<CustLoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<CustLoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Color myColor;
   late Size mediaSize;

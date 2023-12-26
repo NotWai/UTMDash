@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/CustLoginPage.dart';
+import 'package:utm_dash/LoginPage.dart';
 import 'package:utm_dash/signup.dart';
 import 'package:utm_dash/view_runner_page.dart';
 
@@ -42,8 +42,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const CustLoginPage()),
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
               },
             ),

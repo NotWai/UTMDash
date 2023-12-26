@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/CustLoginPage.dart';
-import 'package:utm_dash/HomePage.dart';
+import 'package:utm_dash/LoginPage.dart';
+//import 'package:utm_dash/HomePage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class IntroPage extends StatefulWidget {
@@ -103,7 +103,8 @@ class _IntroPageState extends State<IntroPage> {
             ),
           ),
           content: Container(
-            width: MediaQuery.of(context).size.width * 0.3, // Adjust the width as needed
+            width: MediaQuery.of(context).size.width *
+                0.3, // Adjust the width as needed
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -152,7 +153,7 @@ class _IntroPageState extends State<IntroPage> {
                   Navigator.pop(context); // Close the modal
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CustLoginPage()),
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
               ),
@@ -238,7 +239,8 @@ class SlideItem extends StatelessWidget {
   final dynamic text;
   final bool isLastSlide;
 
-  SlideItem({required this.image, required this.text, required this.isLastSlide});
+  SlideItem(
+      {required this.image, required this.text, required this.isLastSlide});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/CustLoginPage.dart';
+//import 'package:utm_dash/LoginPage.dart';
 import 'package:utm_dash/reusable_widgets.dart';
 import 'package:utm_dash/services/auth.dart';
-import 'package:utm_dash/signout.dart';
+//import 'package:utm_dash/signout.dart';
 //import 'package:utm_dash/screen/signout.dart';
 //import 'package:utm_dash/screen/testSignOut.dart';
 //import 'package:utm_dash/utils/color_utils.dart';
@@ -96,7 +96,9 @@ class _SignUpState extends State<SignUp> {
                       true,
                       _passwordTextController,
                     ),
-                    SizedBox(height: 12,),
+                    SizedBox(
+                      height: 12,
+                    ),
                     reusableTextField("Confirm Password", Icons.lock_outline,
                         true, _confirmPassTextController),
                     const SizedBox(
@@ -104,10 +106,14 @@ class _SignUpState extends State<SignUp> {
                     ),
                     signUpSignInLogoutButton(context, true, () async {
                       if (_formKey.currentState!.validate()) {
-                        dynamic result = await _auth.register(_emailTextController.text.trim(), _passwordTextController.text.trim(), _fullNameTextController.text, _phoneNumTextController.text);
+                        dynamic result = await _auth.register(
+                            _emailTextController.text.trim(),
+                            _passwordTextController.text.trim(),
+                            _fullNameTextController.text,
+                            _phoneNumTextController.text);
                         if (result == null) {
                           print('Invalid login');
-                        } else{
+                        } else {
                           Navigator.pop(context);
                         }
                       }
