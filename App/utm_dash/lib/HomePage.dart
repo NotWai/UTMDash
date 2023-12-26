@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/LoginPage.dart';
 import 'package:utm_dash/signup.dart';
-import 'package:utm_dash/view_runner_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -60,22 +59,6 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const SignUp()));
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'View Page',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  // Add your desired text style properties here
-                  fontWeight: FontWeight.bold,
-                  // Other properties...
-                ),
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MyApp()));
               },
             ),
           ],
