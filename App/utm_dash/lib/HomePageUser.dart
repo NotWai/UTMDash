@@ -86,84 +86,6 @@ class _HomePageUserState extends State<HomePageUser> {
   //         },
   //       );
 
-<<<<<<< HEAD
-          if (trackingList.contains(trackingNumber)) {
-            print('Parcel already exists in profile');
-            return showDialog(
-              context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Parcel Details'),
-                content: Text('Your parcel already arrived.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the pop-up
-                    },
-                    child: Text('OK'),
-           ),
-                ],
-              );
-            },
-          );
-        }
-        } catch (e) {
-          print('Error fetching parcel data: $e');
-        }
-
-        // Insert into user profile
-        await userRef.update({
-          'trackingId': FieldValue.arrayUnion([trackingNumber])
-        });
-
-        /*      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Parcel Details'),
-            content: Text('Parcel data:\nArrived: ${docs.first.get("arrived")}\nFrom: ${docs.first.get("fromName")}'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the pop-up
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );*/
-
-        setState(() {
-          // Update your widget's state with the fetched data if needed
-          // Example: parcelData = snapshot.data();
-        });
-      } else {
-      print('Parcel not found');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Parcel Not Found'),
-            content: Text('No parcel found with the given tracking number.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the pop-up
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-    
-    } catch (e) {
-      print('Error fetching parcel data: $e');
-    }
-  }
-=======
   //       setState(() {
   //         // Update your widget's state with the fetched data if needed
   //         // Example: parcelData = snapshot.data();
@@ -193,7 +115,6 @@ class _HomePageUserState extends State<HomePageUser> {
   //     print('Error fetching parcel data: $e');
   //   }
   // }
->>>>>>> 28e6768af58194010a2426622017df2c82c8d556
 
   Future<List<Map<String, dynamic>>> trackParcelList() async {
     try {
@@ -725,4 +646,4 @@ class _HomePageUserState extends State<HomePageUser> {
       ),
     );
   }
-}
+
