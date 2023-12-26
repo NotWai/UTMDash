@@ -2,25 +2,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/HomePageUser.dart';
+import 'package:utm_dash/Hub/hub_homepage.dart';
 import 'package:utm_dash/profile_screen.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
 
-class CustomerWrapper extends StatefulWidget {
-  const CustomerWrapper({Key? key});
+class HubWrapper extends StatefulWidget {
+  const HubWrapper({Key? key});
 
   @override
-  State<CustomerWrapper> createState() => _CustomerWrapperState();
+  State<HubWrapper> createState() => _HubWrapperState();
 }
 
-class _CustomerWrapperState extends State<CustomerWrapper> {
+class _HubWrapperState extends State<HubWrapper> {
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      HomePageUser(),
-      CustomerPage(),
+      HubHomepage(),
       ProfileScreen(),
     ];
 
@@ -43,17 +41,12 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
             padding: EdgeInsets.all(16),
             tabs: [
               GButton(
-                gap: 8,
+                margin: EdgeInsets.only(left: 40),
                 icon: Icons.home,
                 text: 'Home',
               ),
               GButton(
-                gap: 8,
-                icon: Icons.notifications,
-                text: 'Notifications',
-              ),
-              GButton(
-                gap: 8,
+                margin: EdgeInsets.only(right: 40),
                 icon: Icons.person,
                 text: 'Profile',
               ),

@@ -86,7 +86,6 @@ class _HubHomepageState extends State<HubHomepage> {
                                               controller:
                                                   TextEditingController(),
                                               focusNode: FocusNode(),
-                                              autofocus: true,
                                               obscureText: false,
                                               decoration: const InputDecoration(
                                                 hintText: 'Search...',
