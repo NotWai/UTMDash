@@ -193,7 +193,6 @@ class _HomePageUserState extends State<HomePageUser> {
                     Text('Tracking ID: ${parcelSnapshot['trackingID']}'),
                     Text('From: ${parcelSnapshot['fromName']}'),
                     Text('Arrived in: ${parcelSnapshot['arrived']}'),
-                    
                   ],
                 ),
                 actions: [
@@ -214,8 +213,8 @@ class _HomePageUserState extends State<HomePageUser> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parcel Not Found'),
-                content:
-                    const Text('No parcel found with the given tracking number.'),
+                content: const Text(
+                    'No parcel found with the given tracking number.'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -646,4 +645,4 @@ class _HomePageUserState extends State<HomePageUser> {
       ),
     );
   }
-
+}
