@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/HomePage.dart';
+import 'package:utm_dash/screens/wrapper.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const HomePage(),
+          builder: (_) => const Wrapper(),
         ),
       );
     });
@@ -17,17 +17,17 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.red, Colors.black],
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
           ),
         ),
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
+          children: [
             Image(
               image: AssetImage("assets/images/UTMDASH_LOGO-removebg.png"),
             ),
