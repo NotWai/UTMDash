@@ -20,7 +20,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: "AIzaSyA1dPSUPvWXJQiJldbYekcdljcLBfEIRQ4",
       appId: "1:274283878114:android:dc7123b4b882a9c78c70bb",
       messagingSenderId: "274283878114",
@@ -28,21 +28,25 @@ void main() async {
     ),
   );
   await FirebaseAPI().initNotification();
-  runApp(MyApp());
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<UserClass?>.value(
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         routes: {
           '/notification_screen': (context) => CustomerPage(),
         },
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
