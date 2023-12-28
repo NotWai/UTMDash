@@ -88,10 +88,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Image.network(
-                      "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
-                      fit: BoxFit.cover,
-                    ),
+                    // child: Image.network(
+                    //   "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
               ],

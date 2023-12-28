@@ -184,10 +184,10 @@ class _EditProfileState extends State<EditProfile> {
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                         ),
-                                        child: Image.network(
-                                          "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
-                                          fit: BoxFit.cover,
-                                        ),
+                                        // child: Image.network(
+                                        //   "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
+                                        //   fit: BoxFit.cover,
+                                        // ),
                                       ),
                                     ),
                                   ),
