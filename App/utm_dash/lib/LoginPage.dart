@@ -28,14 +28,14 @@ class _LoginPageState extends State<LoginPage> {
       decoration: BoxDecoration(
         color: myColor,
         image: DecorationImage(
-          image: const AssetImage("assets/images/UTMDASH_LOGO.png"),
+          image: const AssetImage("assets/images/UTMDASH_LOGO-removebg.png"),
           fit: BoxFit.cover,
           colorFilter:
               ColorFilter.mode(myColor.withOpacity(0.2), BlendMode.dstATop),
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFFBE1C2D),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0, // Remove elevation
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
           Text(
             "Welcome",
             style: TextStyle(
-                color: myColor, fontSize: 32, fontWeight: FontWeight.w500),
+                color: Colors.black, fontSize: 32, fontWeight: FontWeight.w500),
           ),
           _buildGreyText("Please login with your information"),
           const SizedBox(height: 60),
@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
         shadowColor: myColor,
         minimumSize: const Size.fromHeight(60),
       ),
-      child: const Text("LOGIN"),
+      child: const Text("LOGIN", style: TextStyle(color: Colors.white)),
     );
   }
 }

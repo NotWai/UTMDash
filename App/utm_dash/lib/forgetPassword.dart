@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'emailSent.dart';
@@ -19,9 +19,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forget password'),
-        centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFFBE1C2D),
       ),
       body: Padding(
         padding: const EdgeInsets.all(50.0),
@@ -33,11 +31,19 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               child: Column(
                 children: [
                   Text(
-                    'Please enter your email to receive forget message:',
+                    'Forgot your password?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 30,
                         color: Colors.red[700],
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'That is okay. It happens! Enter your email below to reset your password',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey[700],
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),

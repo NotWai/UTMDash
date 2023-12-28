@@ -5,9 +5,7 @@ class EmailSent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
-        centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFFBE1C2D),
       ),
       body: Center(
         child: Column(
@@ -15,8 +13,8 @@ class EmailSent extends StatelessWidget {
           children: [
             Icon(
               Icons.email, // Use Icons.email instead of icon: Icon(Icons.email)
-              size: 100,  // Set the size of the icon as needed
-              color: Colors.red[300],  // Set the color of the icon
+              size: 100, // Set the size of the icon as needed
+              color: Colors.red[300], // Set the color of the icon
             ),
             SizedBox(
               height: 60,
@@ -34,7 +32,9 @@ class EmailSent extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 120,),
+            SizedBox(
+              height: 120,
+            ),
           ],
         ),
       ),
