@@ -162,8 +162,7 @@ class _HubHomepageState extends State<HubHomepage> {
                           hoverColor: Colors.white60,
                           highlightColor: Colors.transparent,
                           onTap: () async {
-                            Navigator.of(context)
-                                .pushNamed('HubCustomerDetails');
+                            
                           },
                           child: Container(
                             width: 50,

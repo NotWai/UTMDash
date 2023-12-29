@@ -1,7 +1,9 @@
 // ignore_for_file: await_only_futures, non_constant_identifier_names, unused_element, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseService {
   final String uid;
@@ -91,5 +93,36 @@ class DatabaseService {
       print('Error fetching user role: $e');
       return null;
     }
+  }
+
+  ParcelObject _parcelObjectFromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>?;
+    return ParcelObject(
+      fromName: data?['fromName'] ?? '',
+      runnerID: data?['runnerID'] ?? '',
+      arrived: formatTimestamp(data?['arrived']),
+      trackingID: data?['trackingID'] ?? '',
+    );
+  }
+
+  Stream<ParcelObject?> get getLatestParcelForUser {
+    return parcelsCollection
+        .where('receiverID', isEqualTo: uid)
+        .orderBy('arrived', descending: true)
+        .limit(1)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        return _parcelObjectFromSnapshot(snapshot.docs.first);
+      } else {
+        return null;
+      }
+    });
+  }
+
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
+    return formattedDate;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
 
@@ -53,6 +54,9 @@ class _HomePageUserState extends State<HomePageUser> {
       ),
       minimumSize: const Size(double.infinity, 40),
     );
+
+    final user = Provider.of<UserClass?>(context);
+    final firestoreAccess = DatabaseService(uid: user!.uid);
 
     return Scaffold(
       key: scaffoldKey,
@@ -123,9 +127,8 @@ class _HomePageUserState extends State<HomePageUser> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
                               borderSide: const BorderSide(
-                                color: Colors
-                                    .black,
-                                width: 2.0, 
+                                color: Colors.black,
+                                width: 2.0,
                               ),
                             ),
                             filled: true,
@@ -149,8 +152,7 @@ class _HomePageUserState extends State<HomePageUser> {
                                   const Size(double.infinity, 50)),
                               shape: MaterialStateProperty.all<OutlinedBorder>(
                                 RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -178,7 +180,8 @@ class _HomePageUserState extends State<HomePageUser> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
                     child: AspectRatio(
                       aspectRatio: 2.0,
                       child: Image.asset(
@@ -207,135 +210,209 @@ class _HomePageUserState extends State<HomePageUser> {
                               Align(
                                 alignment: const AlignmentDirectional(-1, 0),
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      20, 10, 20, 10),
                                   child: Text(
                                     'My Parcels',
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      fontFamily: 'Inter',
-                                      fontSize: 18,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontFamily: 'Inter',
+                                          fontSize: 18,
+                                        ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 5),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: MediaQuery.of(context).size.height * 0.19,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).canvasColor,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        blurRadius: 5,
-                                        color: Color(0x33000000),
-                                        offset: Offset(1.0, 1.0),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(10),
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Align(
-                                              alignment: const AlignmentDirectional(-1, -1),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                                  10, 0, 10, 0),
-                                                child: Text(
-                                                  'Parcel Number',
-                                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: const AlignmentDirectional(-1, -1),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                                  10, 5, 20, 10),
-                                                child: Text(
-                                                  'MYNJV0037604130',
-                                                  style: Theme.of(context).textTheme.bodyMedium,
-                                                ),
-                                              ),
-                                            ),
-                                            const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SizedBox(
-                                                  width: 420,
-                                                  child: Divider(
-                                                    height: 2,
-                                                    thickness: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                              StreamBuilder<ParcelObject?>(
+                                stream: firestoreAccess.getLatestParcelForUser,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    final parcel = snapshot.data;
+
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 10, 5),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.19,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).canvasColor,
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              blurRadius: 5,
+                                              color: Color(0x33000000),
+                                              offset: Offset(1.0, 1.0),
+                                            )
                                           ],
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                            color: Colors.transparent,
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                                    10, 0, 00, 0),
-                                                  child: Text(
-                                                    'Runner',
-                                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                                    190, 0, 20, 0),
-                                                  child: Text(
-                                                    'Arrived',
-                                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                             Padding(
-                                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                                0, 5, 0, 0),
-                                              child: Row(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 5, 0, 0),
+                                              child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                                      10, 0, 30, 0),
-                                                    child: Text(
-                                                      'Farid Azri',
-                                                      style: Theme.of(context).textTheme.bodyMedium,
+                                                  Align(
+                                                    alignment:
+                                                        const AlignmentDirectional(
+                                                            -1, -1),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                              10, 0, 10, 0),
+                                                      child: Text(
+                                                        'Parcel Number',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium
+                                                            ?.copyWith(
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                      ),
                                                     ),
                                                   ),
+                                                  Align(
+                                                    alignment:
+                                                        const AlignmentDirectional(
+                                                            -1, -1),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                              10, 5, 20, 10),
+                                                      child: Text(
+                                                        parcel?.trackingID ?? 'You have no parcels to be delivered yet',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 420,
+                                                        child: Divider(
+                                                          height: 2,
+                                                          thickness: 1,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 10, 0, 0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                10, 0, 00, 0),
+                                                        child: Text(
+                                                          'Sender',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium
+                                                                  ?.copyWith(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                190, 0, 20, 0),
+                                                        child: Text(
+                                                          'Arrived',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium
+                                                                  ?.copyWith(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                   Padding(
-                                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                                      130, 0, 10, 0),
-                                                    child: Text(
-                                                      '10 Dec 2023',
-                                                      style: Theme.of(context).textTheme.bodyMedium,
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                            0, 5, 0, 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                  10, 0, 30, 0),
+                                                          child: Text(
+                                                            parcel?.fromName ?? '',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyMedium,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(130,
+                                                                  0, 10, 0),
+                                                          child: Text(
+                                                            parcel?.arrived ?? '',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyMedium,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
@@ -344,9 +421,9 @@ class _HomePageUserState extends State<HomePageUser> {
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -357,26 +434,31 @@ class _HomePageUserState extends State<HomePageUser> {
                   Align(
                     alignment: const AlignmentDirectional(0, 0),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(20, 50, 20, 20),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(20, 50, 20, 20),
                       child: ElevatedButton(
                         onPressed: () {
                           _onRequestRunnerPressed();
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFBE1C2D)),
-                          minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFFBE1C2D)),
+                          minimumSize: MaterialStateProperty.all<Size>(
+                              const Size(double.infinity, 50)),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // Adjust the border radius as needed
+                              borderRadius: BorderRadius.circular(
+                                  10), // Adjust the border radius as needed
                             ),
                           ),
                         ),
                         child: Text(
                           'Request to Be Runner',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontFamily: 'Inter',
-                            color: Colors.white,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontFamily: 'Inter',
+                                    color: Colors.white,
+                                  ),
                         ),
                       ),
                     ),
