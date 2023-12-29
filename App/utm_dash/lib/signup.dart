@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 //import 'package:utm_dash/LoginPage.dart';
 import 'package:utm_dash/reusable_widgets.dart';
@@ -96,7 +98,7 @@ class _SignUpState extends State<SignUp> {
                       true,
                       _passwordTextController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     reusableTextField("Confirm Password", Icons.lock_outline,
@@ -118,19 +120,19 @@ class _SignUpState extends State<SignUp> {
                             _emailTextController.text.trim(),
                             _passwordTextController.text.trim(),
                             _fullNameTextController.text,
-                            _phoneNumTextController.text);
+                            _phoneNumTextController.text,
+                            context);
 
-                        if(context.mounted){
+                        if (context.mounted) {
                           Navigator.pop(context);
                         }
-                        
+
                         if (result == null) {
                           print('Invalid login');
                         } else {
                           Navigator.pop(context);
                         }
                       }
-                      ;
                     })
                   ],
                 ),

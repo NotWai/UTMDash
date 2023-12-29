@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ParcelObject{
   final String fromName;
   final String runnerID;

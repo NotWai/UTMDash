@@ -19,7 +19,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFBE1C2D),
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(50.0),
@@ -34,9 +34,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     'Forgot your password?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.red[700],
                         fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   Text(
                     'That is okay. It happens! Enter your email below to reset your password',
@@ -72,7 +75,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.red.shade300,
+                              ),
+                            ),
+                          );
                           await _auth.resetPassword(email);
+                          if(context.mounted){
+                            Navigator.pop(context);
+                          }
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/edit_profile.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/services/f_database.dart';
-import 'package:utm_dash/signout.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/signup.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
-
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -21,26 +15,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final AuthService _auth = AuthService();
 
-  String? _currFullName;
-  String? _currEmail;
-
-   @override
-  void initState() {
-    super.initState();
-    _fetchDataFromDatabase();
-  }
-
-  Future<void> _fetchDataFromDatabase() async {
-    final user = Provider.of<UserClass>(context, listen: false);
-    UserData? userData = await DatabaseService(uid: user.uid).userData.first;
-    setState(() {
-      _currFullName = userData.fullName;
-      _currEmail = userData.emailAddress;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserClass>(context, listen: false);
+    final firestoreAccess = DatabaseService(uid: user.uid);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(
@@ -98,26 +76,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
-        Align(
-          alignment: const AlignmentDirectional(0.00, 0.00),
-          child: Text(_currFullName ?? 'Loading...',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              )),
-        ),
-        Align(
-          alignment: const AlignmentDirectional(0.00, 0.00),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 16),
-            child: Text(
-              _currEmail ?? 'Loading...',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+        StreamBuilder(
+          stream: firestoreAccess.userData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if(snapshot.hasError){
+              return const Text('Error 404');
+            }else {
+              UserData? data = snapshot.data;
+              return Column(
+              children: [
+                Align(
+                  alignment: const AlignmentDirectional(0.00, 0.00),
+                  child: Text(data?.fullName?? 'Loading...',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      )),
+                ),
+                Align(
+                  alignment: const AlignmentDirectional(0.00, 0.00),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 16),
+                    child: Text(
+                       data?.emailAddress ?? 'Loading...',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+            }
+          },
         ),
         const Padding(
           padding: EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),

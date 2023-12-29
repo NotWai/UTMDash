@@ -199,6 +199,7 @@ class _LoginPageState extends State<LoginPage> {
           dynamic result = await _auth.signIn(
             emailController.text.trim(),
             passwordController.text.trim(),
+            context
           );
 
           if(context.mounted){
