@@ -85,7 +85,7 @@ class _SignUpState extends State<SignUp> {
                       Icons.email_outlined,
                       false,
                       _emailTextController,
-                      isEmail: true, // Set this as an email field
+                      isEmail: true,
                     ),
                     const SizedBox(
                       height: 12,
@@ -106,11 +106,24 @@ class _SignUpState extends State<SignUp> {
                     ),
                     signUpSignInLogoutButton(context, true, () async {
                       if (_formKey.currentState!.validate()) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.red.shade300,
+                            ),
+                          ),
+                        );
                         dynamic result = await _auth.register(
                             _emailTextController.text.trim(),
                             _passwordTextController.text.trim(),
                             _fullNameTextController.text,
                             _phoneNumTextController.text);
+
+                        if(context.mounted){
+                          Navigator.pop(context);
+                        }
+                        
                         if (result == null) {
                           print('Invalid login');
                         } else {

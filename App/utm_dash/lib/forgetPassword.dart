@@ -83,10 +83,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         elevation: 20,
-                        shadowColor: Theme.of(context).primaryColor,
+                        backgroundColor: Color(0xFFBE1C2D),
+                        shadowColor: Color(0xFFBE1C2D),
                         minimumSize: const Size.fromHeight(50),
                       ),
-                      child: Text('Submit'),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],

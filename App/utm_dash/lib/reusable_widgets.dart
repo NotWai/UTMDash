@@ -9,7 +9,6 @@ Image logoWidget(String imageName) {
   );
 }
 
-
 Container signUpSignInLogoutButton(
     BuildContext context, bool isLogin, Function onTap) {
   return Container(
@@ -18,8 +17,8 @@ Container signUpSignInLogoutButton(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
     child: ElevatedButton(
-      onPressed: ()  {
-         onTap();
+      onPressed: () {
+        onTap();
       },
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -39,11 +38,7 @@ Container signUpSignInLogoutButton(
   );
 }
 
-
-TextFormField reusableTextField(
-    String text,
-    IconData icon,
-    bool isPasswordType,
+TextFormField reusableTextField(String text, IconData icon, bool isPasswordType,
     TextEditingController controller,
     {bool isEmail = false}) {
   return TextFormField(
@@ -67,17 +62,17 @@ TextFormField reusableTextField(
         borderRadius: BorderRadius.circular(30.0),
         borderSide: const BorderSide(width: 0, style: BorderStyle.none),
       ),
-      errorStyle: const TextStyle(color: Colors.white), // Set error text color to white
+      errorStyle:
+          const TextStyle(color: Colors.white), // Set error text color to white
       errorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.white), // Set error border color to white
+        borderSide: const BorderSide(
+            color: Colors.white), // Set error border color to white
         borderRadius: BorderRadius.circular(30.0),
       ),
     ),
     keyboardType: isEmail
         ? TextInputType.emailAddress
-        : (isPasswordType
-            ? TextInputType.visiblePassword
-            : TextInputType.text),
+        : (isPasswordType ? TextInputType.visiblePassword : TextInputType.text),
     // Validation logic for email
     validator: (value) {
       if (isEmail) {
@@ -91,6 +86,10 @@ TextFormField reusableTextField(
           return 'Please enter a password';
         } else if (value.length < 6) {
           return 'Password must be at least 6 characters';
+        }
+      } else {
+        if(value!.isEmpty){
+          return "Please don't leave it empty";
         }
       }
       return null;

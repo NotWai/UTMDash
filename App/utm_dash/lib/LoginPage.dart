@@ -188,12 +188,23 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          debugPrint("Email : ${emailController.text}");
-          debugPrint("Password : ${passwordController.text}");
+          showDialog(
+            context: context,
+            builder: (context) => Center(
+              child: CircularProgressIndicator(
+                color: Colors.red.shade300,
+              ),
+            ),
+          );
           dynamic result = await _auth.signIn(
             emailController.text.trim(),
             passwordController.text.trim(),
           );
+
+          if(context.mounted){
+            Navigator.pop(context);
+          }
+
           if (result == null) {
             print('Error: Invalid credentials');
           } else {
