@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         StreamBuilder(
-          stream: firestoreAccess.userData,
+          stream: firestoreAccess.userDataStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

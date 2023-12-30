@@ -29,7 +29,7 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<void> _fetchDataFromDatabase() async {
     final user = Provider.of<UserClass>(context, listen: false);
-    UserData? userData = await DatabaseService(uid: user.uid).userData.first;
+    UserData? userData = await DatabaseService(uid: user.uid).userDataStream.first;
     setState(() {
       _currFullName = userData.fullName;
       _currPhoneNumber = userData.phoneNumber;

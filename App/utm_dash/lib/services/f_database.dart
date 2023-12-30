@@ -58,7 +58,7 @@ class DatabaseService {
     );
   }
 
-  Stream<UserData> get userData {
+  Stream<UserData> get userDataStream {
     return myCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
@@ -124,5 +124,41 @@ class DatabaseService {
     DateTime dateTime = timestamp.toDate();
     String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
     return formattedDate;
+  }
+
+  Future<String?> createParcel(String senderName, String receiverUid, String trackingID,
+      String runnerID, String status, DateTime arrived, DateTime dateline) async {
+    Timestamp time1 = Timestamp.fromDate(arrived);
+    Timestamp time2 = Timestamp.fromDate(dateline);
+    try {
+        await parcelsCollection.add({
+            'fromName': senderName,
+            'receiverID': receiverUid,
+            'trackingID': trackingID,
+            'runnerID': runnerID,
+            'status': status,
+            'arrived': time1,
+            'deadline': time2,
+        });
+        return null;
+    } on FirebaseException catch (e) {
+        return e.message;
+    }
+}
+
+  Future<String?> getUserIdFromEmail(String email) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await myCollection.where('emailAddress', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error fetching user ID from email: ${e.message}');
+      return null;
+    }
   }
 }

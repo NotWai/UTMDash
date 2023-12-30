@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utm_dash/Hub/hub_add_parcel.dart';
 
 class HubHomepage extends StatefulWidget {
   const HubHomepage({super.key});
@@ -161,9 +162,7 @@ class _HubHomepageState extends State<HubHomepage> {
                           focusColor: Colors.transparent,
                           hoverColor: Colors.white60,
                           highlightColor: Colors.transparent,
-                          onTap: () async {
-                            
-                          },
+                          onTap: () async {},
                           child: Container(
                             width: 50,
                             height: 50,
@@ -184,7 +183,7 @@ class _HubHomepageState extends State<HubHomepage> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Text(
-                                    '[Customer\'s Name]', //should retrieve data from firebase
+                                    '[Customer\'s Name]', 
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
@@ -195,7 +194,7 @@ class _HubHomepageState extends State<HubHomepage> {
                                     child: Align(
                                       alignment: AlignmentDirectional(1, 0),
                                       child: Text(
-                                        '[Number of days passed]', //should retrieve data from firebase
+                                        '[Number of days passed]',
                                         style: TextStyle(
                                           color: Color(0xFFBE1C2D),
                                           fontSize: 16,
@@ -243,8 +242,10 @@ class _HubHomepageState extends State<HubHomepage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // ignore: avoid_print
-                      print('IconButton pressed ...');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HubAddParcel()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFBE1C2D),
