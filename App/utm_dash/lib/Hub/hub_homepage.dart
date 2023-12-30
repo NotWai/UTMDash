@@ -1,6 +1,9 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/Hub/hub_add_parcel.dart';
+import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
 
@@ -14,6 +17,35 @@ class HubHomepage extends StatefulWidget {
 class _HubHomepageState extends State<HubHomepage> {
   @override
   Widget build(BuildContext context) {
+    Widget _buildDetailRow(String label, String value) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+
     final user = Provider.of<UserClass?>(context);
     final firestoreAccess = DatabaseService(uid: user!.uid);
     return Scaffold(
@@ -189,6 +221,7 @@ class _HubHomepageState extends State<HubHomepage> {
                                   child: CircularProgressIndicator(),
                                 );
                               }
+
                               return Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 0, 16, 10),
@@ -197,7 +230,116 @@ class _HubHomepageState extends State<HubHomepage> {
                                   focusColor: Colors.transparent,
                                   hoverColor: Colors.white60,
                                   highlightColor: Colors.transparent,
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    ParcelObject? parcelObj =
+                                        await DatabaseService(uid: '')
+                                            .getParcelDetails(
+                                                parcel['trackingID']);
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          elevation: 10.0,
+                                          backgroundColor: Colors.white,
+                                          child: SizedBox(
+                                            width: 500.0,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(20.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  _buildDetailRow(
+                                                      'Customer Name',
+                                                      userData.fullName),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow(
+                                                      'Customer Email',
+                                                      userData.emailAddress),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow(
+                                                      "Phone number",
+                                                      userData.phoneNumber),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Arrived',
+                                                      parcelObj?.arrived ?? ''),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Dateline',
+                                                      parcelObj?.deadline ?? ''),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Status',
+                                                      parcelObj?.status ?? ''),
+                                                  const SizedBox(height: 20.0),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          // Handle request runner action
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                        ),
+                                                        child: const Text(
+                                                          'Change State',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 10.0),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop(); // Close the dialog
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                        ),
+                                                        child: const Text(
+                                                          'Close',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                   child: Container(
                                     width: 50,
                                     height: 50,
@@ -228,7 +370,8 @@ class _HubHomepageState extends State<HubHomepage> {
                                           Flexible(
                                             child: Align(
                                               alignment:
-                                                  const AlignmentDirectional(1, 0),
+                                                  const AlignmentDirectional(
+                                                      1, 0),
                                               child: Text(
                                                 displayText,
                                                 style: TextStyle(
