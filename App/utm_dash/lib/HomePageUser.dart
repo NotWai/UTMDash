@@ -1,9 +1,10 @@
-// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, avoid_print
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, avoid_print, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
@@ -16,25 +17,9 @@ class HomePageUser extends StatefulWidget {
 }
 
 class _HomePageUserState extends State<HomePageUser> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  late TextEditingController textController;
+  final TextEditingController trackController = TextEditingController();
   late FocusNode textFieldFocusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    textController = TextEditingController();
-    textFieldFocusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    textController.dispose();
-    textFieldFocusNode.dispose();
-
-    super.dispose();
-  }
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +29,35 @@ class _HomePageUserState extends State<HomePageUser> {
           statusBarBrightness: Theme.of(context).brightness,
           systemStatusBarContrastEnforced: true,
         ),
+      );
+    }
+
+    Widget _buildDetailRow(String label, String value) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
 
@@ -59,7 +73,6 @@ class _HomePageUserState extends State<HomePageUser> {
     final firestoreAccess = DatabaseService(uid: user!.uid);
 
     return Scaffold(
-      key: scaffoldKey,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
@@ -79,95 +92,216 @@ class _HomePageUserState extends State<HomePageUser> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Align(
-                        alignment: AlignmentDirectional(-1, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
-                          child: Text(
-                            'Track Parcel',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: AlignmentDirectional(-1, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
-                          child: Text(
-                            'Enter parcel number',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Tracking number',
-                            labelStyle: const TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            suffixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                                width: 2.0,
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              20, 30, 20, 20),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _onTrackParcelPressed();
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                  const Size(double.infinity, 50)),
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            child: const Text(
+                  Form(
+                    key: _formkey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Align(
+                          alignment: AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
+                            child: Text(
                               'Track Parcel',
                               style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Align(
+                          alignment: AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
+                            child: Text(
+                              'Enter parcel number',
+                              style: TextStyle(
                                 fontFamily: 'Inter',
-                                fontSize: 18,
                                 color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a tracking number';
+                              }
+                              return null;
+                            },
+                            controller: trackController,
+                            decoration: InputDecoration(
+                              labelText: 'Tracking number',
+                              labelStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              suffixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              errorStyle: const TextStyle(color: Colors.white),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                  width: 2.0,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: const AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                20, 30, 20, 20),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formkey.currentState!.validate()) {
+                                  ParcelObject? parcel =
+                                      await firestoreAccess.getParcelDetails(
+                                          trackController.text.trim());
+                                  if (parcel != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          elevation: 10.0,
+                                          backgroundColor: Colors.white,
+                                          child: SizedBox(
+                                            width: 300.0,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(20.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  _buildDetailRow(
+                                                      'From', parcel.fromName),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow(
+                                                      'Tracking ID', parcel.trackingID),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Arrived in',
+                                                      parcel.arrived),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Dateline',
+                                                      parcel.deadline),
+                                                  const SizedBox(height: 10.0),
+                                                  _buildDetailRow('Status',
+                                                      parcel.status),
+                                                  const SizedBox(height: 20.0),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          // Handle request runner action
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                        ),
+                                                        child: const Text(
+                                                          'Request Runner',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 10.0),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop(); // Close the dialog
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                        ),
+                                                        child: const Text(
+                                                          'Close',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    AppSnackBar.showSnackBar(context, 'There is no parcel with that Tracking ID is registered yet!');
+                                  }
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.black),
+                                minimumSize: MaterialStateProperty.all<Size>(
+                                    const Size(double.infinity, 50)),
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'Track Parcel',
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -303,7 +437,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                                               .fromSTEB(
                                                               10, 5, 20, 10),
                                                       child: Text(
-                                                        parcel?.trackingID ?? 'You have no parcels to be delivered yet',
+                                                        parcel?.trackingID ??
+                                                            'You have no parcels to be delivered yet',
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .bodyMedium,
@@ -392,7 +527,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                                                   .fromSTEB(
                                                                   10, 0, 30, 0),
                                                           child: Text(
-                                                            parcel?.fromName ?? '',
+                                                            parcel?.fromName ??
+                                                                '',
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
@@ -405,7 +541,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                                                   .fromSTEB(130,
                                                                   0, 10, 0),
                                                           child: Text(
-                                                            parcel?.arrived ?? '',
+                                                            parcel?.arrived ??
+                                                                '',
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme

@@ -102,6 +102,9 @@ class DatabaseService {
       runnerID: data?['runnerID'] ?? '',
       arrived: formatTimestamp(data?['arrived']),
       trackingID: data?['trackingID'] ?? '',
+      receiverID: data?['receiverID'] ?? '',
+      deadline: formatTimestamp(data?['deadline']),
+      status: data?['status'] ?? '',
     );
   }
 
@@ -119,6 +122,24 @@ class DatabaseService {
       }
     });
   }
+
+  Future<ParcelObject?> getParcelDetails(String trackingID) async {
+  try {
+    final querySnapshot = await parcelsCollection
+        .where('trackingID', isEqualTo: trackingID)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return null;
+    }
+
+    return _parcelObjectFromSnapshot(querySnapshot.docs.first);
+
+  } on FirebaseException catch (e) {
+    print("Error fetching parcel details: ${e.message}");
+    return null;
+  }
+}
 
   String formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
