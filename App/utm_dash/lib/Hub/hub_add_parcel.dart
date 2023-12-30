@@ -558,14 +558,17 @@ class _HubAddParcelState extends State<HubAddParcel> {
                                         'Arrived at Hub',
                                         datePicked1!,
                                         datePicked2!);
-                                if(parcel != null){
+                                if (parcel != null) {
                                   AppSnackBar.showSnackBar(context, parcel);
-                                } else{
-                                  AppSnackBar.showSnackBar(context, 'Parcel has been added to the database', backgroundColor: Colors.green);
+                                } else {
+                                  AppSnackBar.showSnackBar(context,
+                                      'Parcel has been added to the database',
+                                      backgroundColor: Colors.green);
                                   Navigator.pop(context);
                                 }
-                              } else{
-                                AppSnackBar.showSnackBar(context, 'Error: The provided email address is not registered!');
+                              } else {
+                                AppSnackBar.showSnackBar(context,
+                                    'Error: The provided email address is not registered!');
                               }
                             } else {
                               AppSnackBar.showSnackBar(

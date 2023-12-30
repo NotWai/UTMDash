@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //width: 403,
               height: 98,
               decoration: const BoxDecoration(
-                color: Color(0xFFCC2C2C),
+                color: Color(0xFFBE1C2D),
               ),
               child: const Align(
                 alignment: AlignmentDirectional(0.00, 0.00),
@@ -83,35 +83,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if(snapshot.hasError){
+            } else if (snapshot.hasError) {
               return const Text('Error 404');
-            }else {
+            } else {
               UserData? data = snapshot.data;
               return Column(
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(0.00, 0.00),
-                  child: Text(data?.fullName?? 'Loading...',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      )),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(0.00, 0.00),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 16),
-                    child: Text(
-                       data?.emailAddress ?? 'Loading...',
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
+                children: [
+                  Align(
+                    alignment: const AlignmentDirectional(0.00, 0.00),
+                    child: Text(data?.fullName ?? 'Loading...',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.00, 0.00),
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 16),
+                      child: Text(
+                        data?.emailAddress ?? 'Loading...',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            );
+                  )
+                ],
+              );
             }
           },
         ),

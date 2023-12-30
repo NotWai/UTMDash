@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePageUser extends StatefulWidget {
   const HomePageUser({Key? key}) : super(key: key);
@@ -197,8 +199,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                                   _buildDetailRow(
                                                       'From', parcel.fromName),
                                                   const SizedBox(height: 10.0),
-                                                  _buildDetailRow(
-                                                      'Tracking ID', parcel.trackingID),
+                                                  _buildDetailRow('Tracking ID',
+                                                      parcel.trackingID),
                                                   const SizedBox(height: 10.0),
                                                   _buildDetailRow('Arrived in',
                                                       parcel.arrived),
@@ -206,8 +208,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                                   _buildDetailRow('Dateline',
                                                       parcel.deadline),
                                                   const SizedBox(height: 10.0),
-                                                  _buildDetailRow('Status',
-                                                      parcel.status),
+                                                  _buildDetailRow(
+                                                      'Status', parcel.status),
                                                   const SizedBox(height: 20.0),
                                                   Row(
                                                     mainAxisAlignment:
@@ -272,7 +274,8 @@ class _HomePageUserState extends State<HomePageUser> {
                                       },
                                     );
                                   } else {
-                                    AppSnackBar.showSnackBar(context, 'There is no parcel with that Tracking ID is registered yet!');
+                                    AppSnackBar.showSnackBar(context,
+                                        'There is no parcel with that Tracking ID is registered yet!');
                                   }
                                 }
                               },
@@ -316,12 +319,16 @@ class _HomePageUserState extends State<HomePageUser> {
                   Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
-                    child: AspectRatio(
-                      aspectRatio: 2.0,
-                      child: Image.asset(
-                        'assets/images/Runner_ads.png',
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () =>
+                          launch('https://forms.gle/drQonKjB851g5Hws6'),
+                      child: AspectRatio(
+                        aspectRatio: 2.0,
+                        child: Image.asset(
+                          'assets/images/Runner_ads.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        ),
                       ),
                     ),
                   ),
@@ -568,38 +575,6 @@ class _HomePageUserState extends State<HomePageUser> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: const AlignmentDirectional(0, 0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(20, 50, 20, 20),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _onRequestRunnerPressed();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFFBE1C2D)),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(double.infinity, 50)),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  10), // Adjust the border radius as needed
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Request to Be Runner',
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontFamily: 'Inter',
-                                    color: Colors.white,
-                                  ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -611,9 +586,5 @@ class _HomePageUserState extends State<HomePageUser> {
 
   void _onTrackParcelPressed() {
     print('Track Parcel button pressed ...');
-  }
-
-  void _onRequestRunnerPressed() {
-    print('Request Runner button pressed ...');
   }
 }

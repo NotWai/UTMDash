@@ -34,34 +34,17 @@ class _CustomerPageState extends State<CustomerPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CustomAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SizedBox(height: 20),
-          Icon(
-            Icons.notifications,
-            color: Color.fromARGB(162, 255, 0, 0),
-            size: 30,
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Notifications',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 255, 0, 0),
-              letterSpacing: 1.4,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
           SizedBox(height: 10),
           Expanded(
             child: Container(
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Color.fromARGB(151, 255, 0, 0),
+                color: Color(0xFFBE1C2D),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
@@ -90,14 +73,14 @@ class _CustomerPageState extends State<CustomerPage> {
             child: ElevatedButton(
               onPressed: () async {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 0, 0),
+                backgroundColor: Color(0xFFBE1C2D),
                 shape: const StadiumBorder(),
                 elevation: 20,
-                shadowColor: Color.fromARGB(255, 255, 0, 0),
+                shadowColor: Colors.black,
                 minimumSize: const Size.fromHeight(50),
               ),
               child: Text(
-                'Request A driver Now!',
+                'Request runner',
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -134,14 +117,20 @@ class NotificationCard extends StatelessWidget {
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize =>
-      Size.fromHeight(60.0); // Adjust the height as needed
+      Size.fromHeight(74.0); // Adjust the height as needed
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('Customer Page'),
+      title: Text(
+        'Notifications',
+        style: TextStyle(
+          color: Colors.white, // Set the text color to white
+          fontWeight: FontWeight.bold, // Make the text bold
+        ),
+      ),
       centerTitle: true,
-      backgroundColor: Color.fromARGB(255, 255, 0, 0),
+      backgroundColor: Color(0xFFBE1C2D),
     );
   }
 }

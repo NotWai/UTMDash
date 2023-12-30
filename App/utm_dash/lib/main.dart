@@ -20,7 +20,6 @@ void main() async {
     ),
   );
   await FirebaseAPI().initNotification();
-
   runApp(const MyApp());
 }
 
