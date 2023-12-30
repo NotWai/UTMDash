@@ -1,69 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/LoginPage.dart';
-import 'package:utm_dash/signup.dart';
+import 'LoginPage.dart';
+import 'signup.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('UTMDASH'),
-      //   backgroundColor: const Color(0xFFBE1C2D),
-      // ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     children: [
-      //       const DrawerHeader(
-      //         decoration: BoxDecoration(
-      //           color: Color(0xFFBE1C2D),
-      //         ),
-      //         child: Text(
-      //           'Menu',
-      //           style: TextStyle(
-      //             color: Colors.white,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       ListTile(
-      //         title: const Text(
-      //           'Login',
-      //           style: TextStyle(
-      //             color: Colors.black,
-      //             fontSize: 24,
-      //             // Add your desired text style properties here
-      //             fontWeight: FontWeight.bold,
-      //             // Other properties...
-      //           ),
-      //         ),
-      //         onTap: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => const LoginPage()),
-      //           );
-      //         },
-      //       ),
-      //       ListTile(
-      //         title: const Text(
-      //           'Sign Up',
-      //           style: TextStyle(
-      //             color: Colors.black,
-      //             fontSize: 24,
-      //             // Add your desired text style properties here
-      //             fontWeight: FontWeight.bold,
-      //             // Other properties...
-      //           ),
-      //         ),
-      //         onTap: () {
-      //           Navigator.push(context,
-      //               MaterialPageRoute(builder: (context) => const SignUp()));
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       body: Container(
         decoration: BoxDecoration(
           color: const Color(0xFFBE1C2D),
@@ -82,24 +26,51 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
-              ElevatedButton(
+              const Text(
+                'Welcome to UTMDash',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 40), // Adjust spacing as needed
+              MaterialButton(
+                minWidth: 300,
+                height: 60,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
-                child: const Text('Login'),
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Text(
+                  "Login",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
+              MaterialButton(
+                minWidth: 300,
+                height: 60,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const SignUp()),
                   );
                 },
-                child: const Text('Sign Up'),
+                color: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
               ),
             ],
           ),
