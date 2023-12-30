@@ -161,4 +161,8 @@ class DatabaseService {
       return null;
     }
   }
+
+  Stream<QuerySnapshot> get getParcelStream{
+    return parcelsCollection.orderBy('deadline', descending: false).snapshots();
+  }
 }
