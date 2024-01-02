@@ -167,10 +167,10 @@ class DatabaseService {
     }
 }
 
-  Future<String?> getUserIdFromEmail(String email) async {
+  Future<String?> getUserIdFromPhone(String phone) async {
     try {
       QuerySnapshot querySnapshot =
-          await myCollection.where('emailAddress', isEqualTo: email).get();
+          await myCollection.where('phoneNumber', isEqualTo: phone).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.first.id;
@@ -178,7 +178,7 @@ class DatabaseService {
         return null;
       }
     } on FirebaseException catch (e) {
-      print('Error fetching user ID from email: ${e.message}');
+      print('Error fetching user ID from phone number: ${e.message}');
       return null;
     }
   }

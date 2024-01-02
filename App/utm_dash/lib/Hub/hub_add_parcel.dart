@@ -14,7 +14,7 @@ class HubAddParcel extends StatefulWidget {
 
 class _HubAddParcelState extends State<HubAddParcel> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController trackingIdController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DateTime? datePicked1;
@@ -131,7 +131,7 @@ class _HubAddParcelState extends State<HubAddParcel> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.labelMedium,
-                          labelText: "Receiver's Email",
+                          labelText: "Receiver's Phone Number",
                           hintStyle: Theme.of(context).textTheme.labelMedium,
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
@@ -164,11 +164,11 @@ class _HubAddParcelState extends State<HubAddParcel> {
                         ),
                         style: Theme.of(context).textTheme.bodyMedium,
                         cursorColor: const Color(0xFFBE3947),
-                        controller: emailController,
+                        controller: phoneController,
                         validator: (value) {
                           if (value!.isEmpty ||
-                              !RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                            return 'Email is required. Please Enter a valid email';
+                              value.length < 6) {
+                            return 'Please enter a valid phone number';
                           }
                           return null;
                         },
@@ -546,8 +546,8 @@ class _HubAddParcelState extends State<HubAddParcel> {
                           if (_formKey.currentState!.validate()) {
                             if (datePicked1 != null && datePicked2 != null) {
                               dynamic result =
-                                  await firestoreAccess.getUserIdFromEmail(
-                                      emailController.text.trim());
+                                  await firestoreAccess.getUserIdFromPhone(
+                                      phoneController.text.trim());
                               if (result != null) {
                                 dynamic parcel =
                                     await firestoreAccess.createParcel(
@@ -568,7 +568,7 @@ class _HubAddParcelState extends State<HubAddParcel> {
                                 }
                               } else {
                                 AppSnackBar.showSnackBar(context,
-                                    'Error: The provided email address is not registered!');
+                                    'Error: The provided phone number is not registered!');
                               }
                             } else {
                               AppSnackBar.showSnackBar(
