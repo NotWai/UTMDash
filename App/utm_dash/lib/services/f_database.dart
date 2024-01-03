@@ -10,17 +10,20 @@ class DatabaseService {
   DatabaseService({required this.uid});
 
   //collection reference
-  final CollectionReference myCollection =
+  final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('Users');
 
   final CollectionReference parcelsCollection =
       FirebaseFirestore.instance.collection('Parcels');
 
+  final CollectionReference deliveryRequestsCollection =
+      FirebaseFirestore.instance.collection('DeliveryRequests');
+
   // update Function:
 
   Future updateUserData(String fullName, String phoneNumber,
       String emailAddress, String role) async {
-    return await myCollection.doc(uid).set({
+    return await usersCollection.doc(uid).set({
       'fullName': fullName,
       'phoneNumber': phoneNumber,
       'emailAddress': emailAddress,
@@ -59,7 +62,7 @@ class DatabaseService {
   }
 
   Stream<UserData> get userDataStream {
-    return myCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+    return usersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
   Future<DocumentSnapshot?> trackParcel(String trackingNumber) async {
@@ -105,6 +108,7 @@ class DatabaseService {
       receiverID: data?['receiverID'] ?? '',
       deadline: formatTimestamp(data?['deadline']),
       status: data?['status'] ?? '',
+      docID: snapshot.id,
     );
   }
 
@@ -124,22 +128,21 @@ class DatabaseService {
   }
 
   Future<ParcelObject?> getParcelDetails(String trackingID) async {
-  try {
-    final querySnapshot = await parcelsCollection
-        .where('trackingID', isEqualTo: trackingID)
-        .get();
+    try {
+      final querySnapshot = await parcelsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .get();
 
-    if (querySnapshot.docs.isEmpty) {
+      if (querySnapshot.docs.isEmpty) {
+        return null;
+      }
+
+      return _parcelObjectFromSnapshot(querySnapshot.docs.first);
+    } on FirebaseException catch (e) {
+      print("Error fetching parcel details: ${e.message}");
       return null;
     }
-
-    return _parcelObjectFromSnapshot(querySnapshot.docs.first);
-
-  } on FirebaseException catch (e) {
-    print("Error fetching parcel details: ${e.message}");
-    return null;
   }
-}
 
   String formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
@@ -147,30 +150,36 @@ class DatabaseService {
     return formattedDate;
   }
 
-  Future<String?> createParcel(String senderName, String receiverUid, String trackingID,
-      String runnerID, String status, DateTime arrived, DateTime dateline) async {
+  Future<String?> createParcel(
+      String senderName,
+      String receiverUid,
+      String trackingID,
+      String runnerID,
+      String status,
+      DateTime arrived,
+      DateTime dateline) async {
     Timestamp time1 = Timestamp.fromDate(arrived);
     Timestamp time2 = Timestamp.fromDate(dateline);
     try {
-        await parcelsCollection.add({
-            'fromName': senderName,
-            'receiverID': receiverUid,
-            'trackingID': trackingID,
-            'runnerID': runnerID,
-            'status': status,
-            'arrived': time1,
-            'deadline': time2,
-        });
-        return null;
+      await parcelsCollection.add({
+        'fromName': senderName,
+        'receiverID': receiverUid,
+        'trackingID': trackingID,
+        'runnerID': runnerID,
+        'status': status,
+        'arrived': time1,
+        'deadline': time2,
+      });
+      return null;
     } on FirebaseException catch (e) {
-        return e.message;
+      return e.message;
     }
-}
+  }
 
   Future<String?> getUserIdFromPhone(String phone) async {
     try {
       QuerySnapshot querySnapshot =
-          await myCollection.where('phoneNumber', isEqualTo: phone).get();
+          await usersCollection.where('phoneNumber', isEqualTo: phone).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.first.id;
@@ -183,7 +192,55 @@ class DatabaseService {
     }
   }
 
-  Stream<QuerySnapshot> get getParcelStream{
+  Stream<QuerySnapshot> get getParcelStream {
     return parcelsCollection.orderBy('deadline', descending: false).snapshots();
+  }
+
+  Future<String?> createDeliveryRequest(
+      String receiverID, String? runnerID, String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return 'A delivery request with this tracking ID already exists.';
+      }
+
+      await deliveryRequestsCollection.add({
+        'receiverID': receiverID,
+        'runnerID': runnerID,
+        'trackingID': trackingID,
+        'status': 'Pending',
+      });
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Stream<QuerySnapshot> get getNewRequestsStream {
+    return deliveryRequestsCollection
+        .where('status', isEqualTo: 'Pending')
+        .snapshots();
+  }
+
+  Future<String?> updateDeliveryRequest(String docID, String status) async {
+    try {
+      final receiverDocRef = deliveryRequestsCollection.doc(docID);
+
+      await receiverDocRef.update({
+        'status': status,
+        'runnerID': uid,
+      });
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Stream<QuerySnapshot> get getAcceptedRequests{
+    return deliveryRequestsCollection.where('runnerID', isEqualTo: uid).snapshots();
   }
 }

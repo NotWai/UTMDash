@@ -6,9 +6,11 @@ class ParcelObject{
   final String deadline;
   final String status;
   final String receiverID;
+  final String docID;
   
 
   ParcelObject({
+    required this.docID,
     required this.fromName,
     required this.runnerID,
     required this.arrived,

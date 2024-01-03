@@ -9,7 +9,6 @@ import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePageUser extends StatefulWidget {
   const HomePageUser({Key? key}) : super(key: key);
@@ -216,8 +215,26 @@ class _HomePageUserState extends State<HomePageUser> {
                                                         MainAxisAlignment.end,
                                                     children: [
                                                       ElevatedButton(
-                                                        onPressed: () {
-                                                          // Handle request runner action
+                                                        onPressed: () async {
+                                                          dynamic result =
+                                                              await firestoreAccess
+                                                                  .createDeliveryRequest(
+                                                                      user.uid,
+                                                                      null,
+                                                                      parcel
+                                                                          .trackingID);
+                                                          if (result == null) {
+                                                            AppSnackBar.showSnackBar(
+                                                                context,
+                                                                'Parcel request has been sent successfully, wait until it get accepted by a runner',
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .green);
+                                                          }
+                                                          else{
+                                                            AppSnackBar.showSnackBar(context, 'Error: $result');
+                                                          }
+                                                          Navigator.pop(context);
                                                         },
                                                         style: ElevatedButton
                                                             .styleFrom(
@@ -582,9 +599,5 @@ class _HomePageUserState extends State<HomePageUser> {
         ),
       ),
     );
-  }
-
-  void _onTrackParcelPressed() {
-    print('Track Parcel button pressed ...');
   }
 }

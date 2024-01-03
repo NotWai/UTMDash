@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:utm_dash/HomePage.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/screens/hub_wrapper.dart';
+import 'package:utm_dash/screens/runner_wrapper.dart';
 import 'package:utm_dash/services/f_database.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/screens/customer_wrapper.dart';
@@ -22,7 +23,7 @@ class Wrapper extends StatelessWidget {
         future: DatabaseService(uid: user.uid).fetchedUserRoleFromFirestore(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator()); 
+            return const Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasError) {
               // Handle errors in fetching user role
@@ -35,6 +36,8 @@ class Wrapper extends StatelessWidget {
                   return const CustomerWrapper();
                 } else if (userRole == 'Hub') {
                   return const HubWrapper();
+                } else if (userRole == 'Runner') {
+                  return const RunnerWrapper();
                 } else {
                   return const Text('Unhandled user role');
                 }

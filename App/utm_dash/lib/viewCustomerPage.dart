@@ -35,7 +35,7 @@ class _CustomerPageState extends State<CustomerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(title: 'Notifications',),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -71,7 +71,7 @@ class _CustomerPageState extends State<CustomerPage> {
           Container(
             width: 200,
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFBE1C2D),
                 shape: const StadiumBorder(),
@@ -115,6 +115,8 @@ class NotificationCard extends StatelessWidget {
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  const CustomAppBar({super.key, required this.title});
   @override
   Size get preferredSize =>
       Size.fromHeight(74.0); // Adjust the height as needed
