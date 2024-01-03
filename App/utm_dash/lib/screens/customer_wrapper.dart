@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/HomePageUser.dart';
-import 'package:utm_dash/profile_screen.dart';
+import 'package:utm_dash/screens/user_interface/user_home_page.dart';
+import 'package:utm_dash/screens/profile/profile_screen.dart';
 import 'package:utm_dash/viewCustomerPage.dart';
 
 class CustomerWrapper extends StatefulWidget {

@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:utm_dash/HomePage.dart';
+import 'package:utm_dash/screens/auth/HomePage.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/screens/hub_wrapper.dart';
 import 'package:utm_dash/screens/runner_wrapper.dart';

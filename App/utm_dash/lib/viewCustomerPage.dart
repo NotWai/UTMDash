@@ -3,7 +3,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/profile_screen.dart';
+import 'package:utm_dash/screens/profile/profile_screen.dart';
 import 'package:utm_dash/signup.dart';
 
 class CustomerPage extends StatefulWidget {

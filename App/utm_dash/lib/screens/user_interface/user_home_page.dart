@@ -1,8 +1,7 @@
-// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, avoid_print, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, avoid_print, no_leading_underscores_for_local_identifiers, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utm_dash/components/cust_parcel_list.dart';
@@ -12,7 +11,7 @@ import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class HomePageUser extends StatefulWidget {
-  const HomePageUser({Key? key}) : super(key: key);
+  const HomePageUser({super.key});
 
   @override
   _HomePageUserState createState() => _HomePageUserState();
@@ -62,14 +61,6 @@ class _HomePageUserState extends State<HomePageUser> {
         ],
       );
     }
-
-    final buttonStyle = ElevatedButton.styleFrom(
-      padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      minimumSize: const Size(double.infinity, 40),
-    );
 
     final user = Provider.of<UserClass?>(context);
     final firestoreAccess = DatabaseService(uid: user!.uid);

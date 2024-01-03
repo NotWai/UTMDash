@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/forgetPassword.dart';
+import 'package:utm_dash/screens/auth/forgetPassword.dart';
 import 'package:utm_dash/services/auth.dart';
 //import 'package:utm_dash/viewCustomerPage.dart';
 //import 'package:test2/hub_page.dart'; // Adjust the import based on the actual file name

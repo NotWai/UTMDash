@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/Hub/hub_homepage.dart';
-import 'package:utm_dash/profile_screen.dart';
+import 'package:utm_dash/screens/hub_interface/hub_homepage.dart';
+import 'package:utm_dash/screens/profile/profile_screen.dart';
 
 class HubWrapper extends StatefulWidget {
   const HubWrapper({Key? key});

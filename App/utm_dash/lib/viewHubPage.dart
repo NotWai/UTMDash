@@ -216,7 +216,7 @@
 import 'package:flutter/material.dart';
 import 'logParcelHub.dart';
 import 'parcelHubProfilePage.dart';
-import 'HomePage.dart';
+import 'screens/auth/HomePage.dart';
 
 class ViewHubPage extends StatefulWidget {
   const ViewHubPage({super.key});

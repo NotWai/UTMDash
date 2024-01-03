@@ -1,7 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/models/user.dart';
-import 'package:utm_dash/profile_screen.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class EditProfile extends StatefulWidget {

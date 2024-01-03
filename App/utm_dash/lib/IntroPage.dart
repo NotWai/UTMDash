@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utm_dash/LoginPage.dart';
+import 'package:utm_dash/screens/auth/LoginPage.dart';
 //import 'package:utm_dash/HomePage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
