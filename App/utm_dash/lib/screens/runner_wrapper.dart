@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:utm_dash/profile_screen.dart';
-import 'package:utm_dash/screens/runner/requests_page.dart';
-import 'package:utm_dash/screens/runner/runner_home_page.dart';
+import 'package:utm_dash/screens/runner_interface/requests_page.dart';
+import 'package:utm_dash/screens/runner_interface/runner_home_page.dart';
 
 class RunnerWrapper extends StatefulWidget {
   const RunnerWrapper({Key? key});

@@ -112,18 +112,15 @@ class DatabaseService {
     );
   }
 
-  Stream<ParcelObject?> get getLatestParcelForUser {
+  Stream<List<ParcelObject>> get getParcelsForUser {
     return parcelsCollection
         .where('receiverID', isEqualTo: uid)
         .orderBy('arrived', descending: true)
-        .limit(1)
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        return _parcelObjectFromSnapshot(snapshot.docs.first);
-      } else {
-        return null;
-      }
+      return snapshot.docs
+          .map((doc) => _parcelObjectFromSnapshot(doc))
+          .toList();
     });
   }
 
@@ -240,7 +237,9 @@ class DatabaseService {
     }
   }
 
-  Stream<QuerySnapshot> get getAcceptedRequests{
-    return deliveryRequestsCollection.where('runnerID', isEqualTo: uid).snapshots();
+  Stream<QuerySnapshot> get getAcceptedRequests {
+    return deliveryRequestsCollection
+        .where('runnerID', isEqualTo: uid)
+        .snapshots();
   }
 }
