@@ -1,17 +1,15 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/screens/profile/profile_screen.dart';
-import 'package:utm_dash/signup.dart';
 
-class CustomerPage extends StatefulWidget {
+class NotificationPage extends StatefulWidget {
+  const NotificationPage({super.key});
+
   @override
-  State<CustomerPage> createState() => _CustomerPageState();
+  State<NotificationPage> createState() => _NotificationPageState();
 }
 
-class _CustomerPageState extends State<CustomerPage> {
+class _NotificationPageState extends State<NotificationPage> {
   List<String> notifications = [
     "Notification 1: Your package has been delivered.",
     "Notification 2: Upcoming delivery schedule change.",
@@ -35,7 +33,9 @@ class _CustomerPageState extends State<CustomerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Notifications',),
+      appBar: CustomAppBar(
+        title: 'Notifications',
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -68,7 +68,7 @@ class _CustomerPageState extends State<CustomerPage> {
           SizedBox(
             height: 40,
           ),
-          Container(
+          SizedBox(
             width: 200,
             child: ElevatedButton(
               onPressed: () {},
@@ -95,7 +95,7 @@ class _CustomerPageState extends State<CustomerPage> {
 class NotificationCard extends StatelessWidget {
   final String notification;
 
-  NotificationCard({required this.notification});
+  const NotificationCard({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {

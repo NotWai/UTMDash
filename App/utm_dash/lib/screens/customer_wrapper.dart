@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:utm_dash/screens/user_interface/user_home_page.dart';
 import 'package:utm_dash/screens/profile/profile_screen.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
+import 'package:utm_dash/screens/notification_page.dart';
 
 class CustomerWrapper extends StatefulWidget {
   const CustomerWrapper({Key? key});
@@ -20,7 +20,7 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
   Widget build(BuildContext context) {
     List<Widget> _pages = [
       HomePageUser(),
-      CustomerPage(),
+      NotificationPage(),
       ProfileScreen(),
     ];
 

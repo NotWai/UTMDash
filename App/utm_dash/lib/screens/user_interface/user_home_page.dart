@@ -8,6 +8,7 @@ import 'package:utm_dash/components/cust_parcel_list.dart';
 import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/screens/user_interface/request_delivery.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class HomePageUser extends StatefulWidget {
@@ -207,29 +208,18 @@ class _HomePageUserState extends State<HomePageUser> {
                                                         MainAxisAlignment.end,
                                                     children: [
                                                       ElevatedButton(
-                                                        onPressed: () async {
-                                                          dynamic result =
-                                                              await firestoreAccess
-                                                                  .createDeliveryRequest(
-                                                                      user.uid,
-                                                                      null,
-                                                                      parcel
-                                                                          .trackingID);
-                                                          if (result == null) {
-                                                            AppSnackBar.showSnackBar(
-                                                                context,
-                                                                'Parcel request has been sent successfully, wait until it get accepted by a runner',
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .green);
-                                                          } else {
-                                                            AppSnackBar
-                                                                .showSnackBar(
-                                                                    context,
-                                                                    'Error: $result');
-                                                          }
-                                                          Navigator.pop(
-                                                              context);
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  RequestDeliveryPage(
+                                                                      parcel:
+                                                                          parcel),
+                                                            ),
+                                                          );
                                                         },
                                                         style: ElevatedButton
                                                             .styleFrom(
@@ -255,7 +245,7 @@ class _HomePageUserState extends State<HomePageUser> {
                                                       ElevatedButton(
                                                         onPressed: () {
                                                           Navigator.of(context)
-                                                              .pop(); // Close the dialog
+                                                              .pop();
                                                         },
                                                         style: ElevatedButton
                                                             .styleFrom(

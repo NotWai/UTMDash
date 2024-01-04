@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:utm_dash/components/cust_list_tile.dart';
+import 'package:utm_dash/components/cust_runner_list_tile.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
-import 'package:utm_dash/viewCustomerPage.dart';
+import 'package:utm_dash/screens/notification_page.dart';
 
 class AcceptedRequestsPage extends StatefulWidget {
   const AcceptedRequestsPage({super.key});

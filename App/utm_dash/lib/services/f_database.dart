@@ -147,6 +147,10 @@ class DatabaseService {
     return formattedDate;
   }
 
+  Timestamp convertDateTimeToTimestamp(DateTime dateTime) {
+    return Timestamp.fromDate(dateTime);
+  }
+
   Future<String?> createParcel(
       String senderName,
       String receiverUid,
@@ -194,7 +198,12 @@ class DatabaseService {
   }
 
   Future<String?> createDeliveryRequest(
-      String receiverID, String? runnerID, String trackingID) async {
+      String receiverID,
+      String? runnerID,
+      String trackingID,
+      DateTime desiredDate,
+      String deliveryAddress,
+      String notes) async {
     try {
       final querySnapshot = await deliveryRequestsCollection
           .where('trackingID', isEqualTo: trackingID)
@@ -210,6 +219,9 @@ class DatabaseService {
         'runnerID': runnerID,
         'trackingID': trackingID,
         'status': 'Pending',
+        'desiredDate': convertDateTimeToTimestamp(desiredDate),
+        'deliveryAddress': deliveryAddress,
+        'notes': notes,
       });
       return null;
     } on FirebaseException catch (e) {
@@ -234,6 +246,24 @@ class DatabaseService {
       return null;
     } on FirebaseException catch (e) {
       return e.message;
+    }
+  }
+
+  Future<String?> getRequestedDate(String trackingID) async {
+    try{
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return formatTimestamp(querySnapshot.docs.first['desiredDate']);
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error fetching requested date: ${e.message}');
+      return null;
     }
   }
 

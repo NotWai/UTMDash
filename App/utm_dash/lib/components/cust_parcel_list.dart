@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/models/parcels.dart';
+import 'package:utm_dash/screens/user_interface/request_delivery.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class CustomParcelListView extends StatefulWidget {
@@ -61,39 +62,83 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0, 5, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Align(
                                 alignment: const AlignmentDirectional(-1, -1),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 10, 0),
-                                  child: Text(
-                                    'Parcel Number',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: Colors.grey,
-                                        ),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 0, 10, 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Parcel Number',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Colors.grey,
+                                            ),
+                                      ),
+                                      FutureBuilder<String?>(
+                                        future: widget.firestoreAccess
+                                            .getRequestedDate(
+                                                parcel.trackingID),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Error: ${snapshot.error}');
+                                          }
+                                          final requestedDate = snapshot.data;
+                                          if (requestedDate == null) {
+                                            return ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  RequestDeliveryPage(
+                                                                      parcel:
+                                                                          parcel),
+                                                            ),
+                                                          );
+                                              },
+                                              child:
+                                                  const Text('Request Runner'),
+                                            );
+                                          } else {
+                                            return Text(
+                                              'Runner Requested: \n$requestedDate',
+                                              style: const TextStyle(
+                                                  color: Colors.grey),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                               Align(
                                 alignment: const AlignmentDirectional(-1, -1),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 5, 20, 10),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10, 5, 20, 10),
                                   child: Text(
                                     parcel.trackingID,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                   ),
                                 ),
                               ),
@@ -114,8 +159,8 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0, 10, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -160,8 +205,9 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(10, 0, 30, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 30, 0),
                                       child: Text(
                                         parcel.fromName,
                                         style: Theme.of(context)
@@ -170,8 +216,9 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(130, 0, 10, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              130, 0, 10, 0),
                                       child: Text(
                                         parcel.arrived,
                                         style: Theme.of(context)
