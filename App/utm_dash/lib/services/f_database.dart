@@ -235,7 +235,7 @@ class DatabaseService {
         .snapshots();
   }
 
-  Future<String?> updateDeliveryRequest(String docID, String status) async {
+  Future<String?> acceptDeliveryRequest(String docID, String status) async {
     try {
       final receiverDocRef = deliveryRequestsCollection.doc(docID);
 
@@ -250,7 +250,7 @@ class DatabaseService {
   }
 
   Future<String?> getRequestedDate(String trackingID) async {
-    try{
+    try {
       final querySnapshot = await deliveryRequestsCollection
           .where('trackingID', isEqualTo: trackingID)
           .limit(1)
@@ -271,5 +271,37 @@ class DatabaseService {
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
         .snapshots();
+  }
+
+  Future<String?> updateDeliveryRequest(
+      String trackingID, String deliveryAddress, String notes, DateTime selectedDate) async {
+    try {
+      final receivedDoc = deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+      receivedDoc.then((value) => value.docs.first.reference.update({
+            'deliveryAddress': deliveryAddress,
+            'notes': notes,
+            'desiredDate': convertDateTimeToTimestamp(selectedDate),
+          }));
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> deleteDeliveryRequest(String trackingID) async {
+    try {
+      final receiverDocRef = deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      await receiverDocRef.then((value) => value.docs.first.reference.delete());
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
   }
 }

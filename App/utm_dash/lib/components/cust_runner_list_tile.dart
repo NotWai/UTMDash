@@ -52,7 +52,7 @@ class MyCustomListTile extends StatelessWidget {
             visible: !accepted,
             child: ElevatedButton(
               onPressed: () async {
-                dynamic result = await firestoreAccess?.updateDeliveryRequest(
+                dynamic result = await firestoreAccess?.acceptDeliveryRequest(
                     request.id, 'Accepted by a Runner');
                 if (result != null) {
                   AppSnackBar.showSnackBar(context, result);

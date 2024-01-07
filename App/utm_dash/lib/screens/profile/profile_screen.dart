@@ -226,20 +226,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               borderRadius: BorderRadius.circular(8),
               shape: BoxShape.rectangle,
             ),
-            child: const Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Icon(
-                    Icons.notifications_none,
+                  const Icon(
+                    Icons.history,
                     color: Color.fromRGBO(90, 92, 96, 1),
                     size: 24,
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                     child: Text(
-                      'Notification Settings',
+                      'View History',
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 16,
@@ -249,11 +249,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.90, 0.00),
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color.fromRGBO(90, 92, 96, 1),
-                        size: 18,
+                      alignment: const AlignmentDirectional(0.90, 0.00),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to desired screen
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color.fromRGBO(90, 92, 96, 1),
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
