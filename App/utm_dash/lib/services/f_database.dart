@@ -48,9 +48,6 @@ class DatabaseService {
         .toList();
   }
 
-  //Stream for firestore
-
-  //user object from snapshot
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>?;
     return UserData(
@@ -273,8 +270,8 @@ class DatabaseService {
         .snapshots();
   }
 
-  Future<String?> updateDeliveryRequest(
-      String trackingID, String deliveryAddress, String notes, DateTime selectedDate) async {
+  Future<String?> updateDeliveryRequest(String trackingID,
+      String deliveryAddress, String notes, DateTime selectedDate) async {
     try {
       final receivedDoc = deliveryRequestsCollection
           .where('trackingID', isEqualTo: trackingID)
@@ -303,5 +300,17 @@ class DatabaseService {
     } on FirebaseException catch (e) {
       return e.message;
     }
+  }
+
+  Stream<List<ParcelObject>> get getDeliveredParcels {
+    return parcelsCollection
+        .where('receiverID', isEqualTo: uid)
+        .where('status', isEqualTo: 'Delivered')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => _parcelObjectFromSnapshot(doc))
+          .toList();
+    });
   }
 }

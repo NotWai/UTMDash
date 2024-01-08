@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/screens/profile/edit_profile.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/screens/user_interface/parcels_history.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/services/f_database.dart';
 
@@ -251,8 +254,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Align(
                       alignment: const AlignmentDirectional(0.90, 0.00),
                       child: GestureDetector(
-                        onTap: () {
-                          // Navigate to desired screen
+                        onTap: () async {
+                          dynamic result = await firestoreAccess
+                              .fetchedUserRoleFromFirestore();
+                          if (result == 'normal') {
+                            Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const UserParcelsHistory()));
+                          }
                         },
                         child: const Icon(
                           Icons.arrow_forward_ios,
