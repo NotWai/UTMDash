@@ -287,6 +287,8 @@ class DatabaseService {
             'deliveryAddress': deliveryAddress,
             'notes': notes,
             'desiredDate': convertDateTimeToTimestamp(selectedDate),
+            'runnerID': '',
+            'status': 'Pending',
           }));
       return null;
     } on FirebaseException catch (e) {
