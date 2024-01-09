@@ -2,75 +2,109 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:utm_dash/components/cust_snackbar.dart';
+import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class MyCustomListTile extends StatelessWidget {
   final QueryDocumentSnapshot request;
-  final bool accepted;
   final DatabaseService? firestoreAccess;
 
   const MyCustomListTile({
     Key? key,
     required this.request,
-    required this.accepted,
     this.firestoreAccess,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 15, right: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.red[600],
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: ListTile(
-          title: Text(
-            request['receiverID'],
-            style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            request['trackingID'],
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          trailing: Visibility(
-            visible: !accepted,
-            child: ElevatedButton(
-              onPressed: () async {
-                dynamic result = await firestoreAccess?.acceptDeliveryRequest(
-                    request.id, 'Accepted by a Runner');
-                if (result != null) {
-                  AppSnackBar.showSnackBar(context, result);
-                } else {
-                  // Navigate to another screen
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+    return FutureBuilder<ParcelObject?>(
+      future: firestoreAccess?.getParcelDetails(request['trackingID']),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError || snapshot.data == null) {
+          return const Center(
+            child: Text('Error'),
+          );
+        }
+        final parcel = snapshot.data!;
+        return FutureBuilder(
+          future: DatabaseService(uid: parcel.receiverID).userDataStream.first,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return const Center(
+                child: Text('Error'),
+              );
+            }
+            final receiver = snapshot.data!;
+            return Align(
+              alignment: const AlignmentDirectional(0, 0),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width * 0.9,
+                  height: MediaQuery.sizeOf(context).height * 0.084,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFBE1C2D),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 10,
+                        color: Colors.black.withOpacity(
+                            0.5), 
+                        offset: const Offset(0,
+                            5),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(8),
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              20, 5, 20, 5),
+                          child: Text(
+                            receiver.fullName,
+                            style: const TextStyle(
+                              fontFamily: 'Inter',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              20, 5, 20, 5),
+                          child: Text(
+                            parcel.trackingID,
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontFamily: 'Inter',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: const Text(
-                'Accept',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }

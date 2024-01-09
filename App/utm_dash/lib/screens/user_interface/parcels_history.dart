@@ -39,7 +39,6 @@ class _UserParcelsHistoryState extends State<UserParcelsHistory> {
             fontSize: 22,
           ),
         ),
-        actions: const [],
         centerTitle: true,
         elevation: 2,
       ),
@@ -58,10 +57,12 @@ class _UserParcelsHistoryState extends State<UserParcelsHistory> {
               child: Padding(
                 padding: EdgeInsets.all(25),
                 child: Text(
-                  'No parcels yet...',
+                  'No prevoius parcels \ndelivered...',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w500,
+                    
                   ),
                 ),
               ),

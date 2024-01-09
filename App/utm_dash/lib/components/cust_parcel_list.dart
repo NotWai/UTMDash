@@ -41,9 +41,9 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                 itemBuilder: (context, index) {
                   final parcel = parcels[index];
 
-                  return FutureBuilder<String?>(
-                    future: widget.firestoreAccess
-                        .getRequestedDate(parcel.trackingID),
+                  return StreamBuilder<String?>(
+                    stream: widget.firestoreAccess
+                        .getRequestedDateStream(parcel.trackingID),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -113,9 +113,9 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                     color: Colors.grey,
                                                   ),
                                             ),
-                                            FutureBuilder<String?>(
-                                              future: widget.firestoreAccess
-                                                  .getRequestedDate(
+                                            StreamBuilder<String?>(
+                                              stream: widget.firestoreAccess
+                                                  .getRequestedDateStream(
                                                       parcel.trackingID),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
@@ -154,7 +154,7 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                   );
                                                 }
                                               },
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),

@@ -20,14 +20,21 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('DeliveryRequests');
 
   // update Function:
+  Future updateUserData(String fullName, String phoneNumber) async {
+    return await usersCollection.doc(uid).update({
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
+    });
+  }
 
-  Future updateUserData(String fullName, String phoneNumber,
+  Future createUserData(String fullName, String phoneNumber,
       String emailAddress, String role) async {
-    return await usersCollection.doc(uid).set({
+    return await usersCollection.doc(uid).update({
       'fullName': fullName,
       'phoneNumber': phoneNumber,
       'emailAddress': emailAddress,
       'Role': role,
+      'FCMToken': '',
     });
   }
 
@@ -246,22 +253,21 @@ class DatabaseService {
     }
   }
 
-  Future<String?> getRequestedDate(String trackingID) async {
-    try {
-      final querySnapshot = await deliveryRequestsCollection
-          .where('trackingID', isEqualTo: trackingID)
-          .limit(1)
-          .get();
-
+  Stream<String?> getRequestedDateStream(String trackingID) {
+    return deliveryRequestsCollection
+        .where('trackingID', isEqualTo: trackingID)
+        .limit(1)
+        .snapshots()
+        .map((querySnapshot) {
       if (querySnapshot.docs.isNotEmpty) {
         return formatTimestamp(querySnapshot.docs.first['desiredDate']);
       } else {
         return null;
       }
-    } on FirebaseException catch (e) {
-      print('Error fetching requested date: ${e.message}');
+    }).handleError((e) {
+      print('Error fetching requested date: $e');
       return null;
-    }
+    });
   }
 
   Stream<QuerySnapshot> get getAcceptedRequests {

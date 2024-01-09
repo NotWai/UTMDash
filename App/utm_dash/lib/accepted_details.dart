@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dash/RunnerHistory.dart';
+import 'package:utm_dash/runner_history.dart';
 
 class AcceptedDetails extends StatefulWidget {
   const AcceptedDetails({Key? key}) : super(key: key);
 
   @override
-  _AcceptedDetailsState createState() => _AcceptedDetailsState();
+  State<StatefulWidget> createState() => _AcceptedDetailsState();
 }
 
 class _AcceptedDetailsState extends State<AcceptedDetails> {
@@ -58,7 +58,6 @@ class _AcceptedDetailsState extends State<AcceptedDetails> {
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
         ),
-        actions: [],
         centerTitle: false,
         elevation: 0,
       ),

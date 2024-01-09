@@ -61,7 +61,7 @@ class _AcceptedRequestsPageState extends State<AcceptedRequestsPage> {
                         itemCount: aRequests.length,
                         itemBuilder: (context, index) {
                           final aRequest = aRequests[index];
-                          return MyCustomListTile(request: aRequest, firestoreAccess: firestoreAccess, accepted: true,);
+                          return MyCustomListTile(request: aRequest, firestoreAccess: firestoreAccess,);
                         },
                       ),
                     ),

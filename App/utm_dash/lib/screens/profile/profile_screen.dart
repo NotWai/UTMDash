@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utm_dash/screens/profile/edit_profile.dart';
 import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/screens/runner_interface/runner_homepage.dart';
 import 'package:utm_dash/screens/user_interface/parcels_history.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'package:utm_dash/services/f_database.dart';
@@ -259,10 +260,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .fetchedUserRoleFromFirestore();
                           if (result == 'normal') {
                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const UserParcelsHistory()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserParcelsHistory()));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RunnerHomepage()));
                           }
                         },
                         child: const Icon(

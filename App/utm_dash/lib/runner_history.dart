@@ -5,7 +5,7 @@ class RunnerHistory extends StatefulWidget {
   const RunnerHistory({Key? key}) : super(key: key);
 
   @override
-  _RunnerHistoryState createState() => _RunnerHistoryState();
+  State<StatefulWidget> createState() => _RunnerHistoryState();
 }
 
 class _RunnerHistoryState extends State<RunnerHistory> {
@@ -63,7 +63,6 @@ class _RunnerHistoryState extends State<RunnerHistory> {
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
         ),
-        actions: [],
         centerTitle: false,
         elevation: 0,
       ),
