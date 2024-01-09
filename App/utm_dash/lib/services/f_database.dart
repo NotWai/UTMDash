@@ -69,6 +69,13 @@ class DatabaseService {
     return usersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
+  Future getRunnerDetails(String runnerID) async {
+    return await usersCollection
+        .doc(runnerID)
+        .get()
+        .then((value) => value.data());
+  }
+
   Future<DocumentSnapshot?> trackParcel(String trackingNumber) async {
     try {
       QuerySnapshot querySnapshot = await parcelsCollection
@@ -287,7 +294,7 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot> get getAcceptedRequests{
+  Stream<QuerySnapshot> get getAcceptedRequests {
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
         .snapshots();
@@ -337,5 +344,24 @@ class DatabaseService {
           .map((doc) => _parcelObjectFromSnapshot(doc))
           .toList();
     });
+  }
+
+  Future<QueryDocumentSnapshot<Object?>?> getDeliveryRequest(
+      String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first;
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error fetching delivery request: ${e.message}');
+      return null;
+    }
   }
 }

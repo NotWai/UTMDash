@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/screens/user_interface/request_delivery.dart';
 import 'package:utm_dash/screens/user_interface/update_delivery.dart';
+import 'package:utm_dash/screens/user_interface/view_runner_offer.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class CustomParcelListView extends StatefulWidget {
@@ -154,7 +155,7 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              RequestDeliveryPage(
+                                                              ViewRunnerOffer(
                                                                   parcel:
                                                                       parcel),
                                                         ),
