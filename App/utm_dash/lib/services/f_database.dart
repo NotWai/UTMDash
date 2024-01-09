@@ -270,7 +270,24 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot> get getAcceptedRequests {
+  Stream<String?> getRequesteStatusStream(String trackingID) {
+    return deliveryRequestsCollection
+        .where('trackingID', isEqualTo: trackingID)
+        .limit(1)
+        .snapshots()
+        .map((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first['status'] as String?;
+      } else {
+        return null;
+      }
+    }).handleError((e) {
+      print('Error fetching requested date: $e');
+      return null;
+    });
+  }
+
+  Stream<QuerySnapshot> get getAcceptedRequests{
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
         .snapshots();

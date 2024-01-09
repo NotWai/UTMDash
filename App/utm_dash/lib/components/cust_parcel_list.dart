@@ -115,21 +115,21 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                             ),
                                             StreamBuilder<String?>(
                                               stream: widget.firestoreAccess
-                                                  .getRequestedDateStream(
+                                                  .getRequesteStatusStream(
                                                       parcel.trackingID),
                                               builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
+                                                if (snapshot
+                                                        .connectionState ==
                                                     ConnectionState.waiting) {
                                                   return const Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  );
+                                                      child:
+                                                          CircularProgressIndicator());
                                                 } else if (snapshot.hasError) {
                                                   return Text(
                                                       'Error: ${snapshot.error}');
                                                 }
-                                                final requestedDate =
-                                                    snapshot.data;
+                                                final status = snapshot.data;
+
                                                 if (requestedDate == null) {
                                                   return ElevatedButton(
                                                     onPressed: () {
@@ -146,13 +146,29 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                     child: const Text(
                                                         'Request Runner'),
                                                   );
-                                                } else {
-                                                  return Text(
-                                                    'Runner Requested: \n$requestedDate',
-                                                    style: const TextStyle(
-                                                        color: Colors.grey),
+                                                } else if (status ==
+                                                    'Accepted by Runner') {
+                                                  return ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              RequestDeliveryPage(
+                                                                  parcel:
+                                                                      parcel),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text(
+                                                        'View offer'),
                                                   );
                                                 }
+                                                return Text(
+                                                  'Runner Requested: \n$requestedDate',
+                                                  style: const TextStyle(
+                                                      color: Colors.grey),
+                                                );
                                               },
                                             )
                                           ],
