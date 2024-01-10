@@ -131,6 +131,22 @@ class DatabaseService {
         .map((snapshot) {
       return snapshot.docs
           .map((doc) => _parcelObjectFromSnapshot(doc))
+          .where((parcel) =>
+              parcel.status != 'Delivered' && parcel.status != 'Picked Up')
+          .toList();
+    });
+  }
+
+  Stream<List<ParcelObject>> get getDeliveredParcelsForUser {
+    return parcelsCollection
+        .where('receiverID', isEqualTo: uid)
+        .orderBy('arrived', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => _parcelObjectFromSnapshot(doc))
+          .where((parcel) =>
+              parcel.status == 'Delivered' || parcel.status == 'Picked Up')
           .toList();
     });
   }
@@ -301,7 +317,7 @@ class DatabaseService {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> get geDeliveredRequests{
+  Stream<QuerySnapshot> get geDeliveredRequests {
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
         .where('status', isEqualTo: 'Done')
@@ -347,18 +363,6 @@ class DatabaseService {
     } on FirebaseException catch (e) {
       return e.message;
     }
-  }
-
-  Stream<List<ParcelObject>> get getDeliveredParcels {
-    return parcelsCollection
-        .where('receiverID', isEqualTo: uid)
-        .where('status', isEqualTo: 'Delivered')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => _parcelObjectFromSnapshot(doc))
-          .toList();
-    });
   }
 
   Future<String?> cancelDeliveryRequest(String trackingID) async {

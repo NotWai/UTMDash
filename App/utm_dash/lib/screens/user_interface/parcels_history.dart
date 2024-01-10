@@ -43,7 +43,7 @@ class _UserParcelsHistoryState extends State<UserParcelsHistory> {
         elevation: 2,
       ),
       body: StreamBuilder<List<ParcelObject>>(
-        stream: firestoreAccess.getDeliveredParcels,
+        stream: firestoreAccess.getDeliveredParcelsForUser,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
