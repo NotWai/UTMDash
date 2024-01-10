@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/screens/runner_interface/accepted_details.dart';
 import 'package:utm_dash/components/cust_runner_list_tile.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
@@ -35,7 +36,7 @@ class _AcceptedRequestsPageState extends State<AcceptedRequestsPage> {
                 ),
               ),
               StreamBuilder(
-                stream: firestoreAccess.getAcceptedRequests,
+                stream: firestoreAccess.getAcceptedRequestsByBoth,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -61,7 +62,21 @@ class _AcceptedRequestsPageState extends State<AcceptedRequestsPage> {
                         itemCount: aRequests.length,
                         itemBuilder: (context, index) {
                           final aRequest = aRequests[index];
-                          return MyCustomListTile(request: aRequest, firestoreAccess: firestoreAccess,);
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AcceptedDetails(
+                                      request: aRequest,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: MyCustomListTile(
+                                request: aRequest,
+                                firestoreAccess: firestoreAccess,
+                              ));
                         },
                       ),
                     ),

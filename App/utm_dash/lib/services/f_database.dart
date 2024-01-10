@@ -294,9 +294,17 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot> get getAcceptedRequests {
+  Stream<QuerySnapshot> get getAcceptedRequestsByRunner {
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
+        .where('status', isEqualTo: 'Accepted by Runner')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> get getAcceptedRequestsByBoth {
+    return deliveryRequestsCollection
+        .where('runnerID', isEqualTo: uid)
+        .where('status', isEqualTo: 'Accepted')
         .snapshots();
   }
 
@@ -344,6 +352,104 @@ class DatabaseService {
           .map((doc) => _parcelObjectFromSnapshot(doc))
           .toList();
     });
+  }
+
+  Future<String?> cancelDeliveryRequest(String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Pending',
+          'runnerID': '',
+        });
+      }
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> acceptDeliveryOffer(String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Accepted',
+        });
+        updateParcelStatus(trackingID);
+      }
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> doneDeliveryRequest(String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Done',
+        });
+        doneParcelStatus(trackingID);
+      }
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<void> doneParcelStatus(String trackingID) async {
+    try {
+      final querySnapshot = await parcelsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Delivered',
+          'runnerID': uid,
+        });
+      }
+
+      return;
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future<void> updateParcelStatus(String trackingID) async {
+    try {
+      final querySnapshot = await parcelsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Preparing for delivery',
+        });
+      }
+
+      return;
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
   }
 
   Future<QueryDocumentSnapshot<Object?>?> getDeliveryRequest(

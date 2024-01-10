@@ -57,7 +57,7 @@ class _RunnerHomepageState extends State<RunnerHomepage> {
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(20, 25, 0, 10),
                       child: Text(
-                        'Accepted Requests',
+                        'Requests pending customer approval',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class _RunnerHomepageState extends State<RunnerHomepage> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: firestoreAccess.getAcceptedRequests,
+                    stream: firestoreAccess.getAcceptedRequestsByRunner,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(

@@ -338,7 +338,7 @@ class _RunnerAcceptState extends State<RunnerAccept> {
 
                                           if (result == null) {
                                             AppSnackBar.showSnackBar(context,
-                                                'You have accepted the request successfully!');
+                                                'You have accepted the request successfully!', backgroundColor: Colors.green);
                                           } else {
                                             AppSnackBar.showSnackBar(
                                                 context, 'Error: $result');

@@ -2,8 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/f_database.dart';
@@ -97,7 +97,111 @@ class _ViewRunnerOfferState extends State<ViewRunnerOffer> {
                     },
                   );
                 },
-              )
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade700, Colors.red.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          dynamic result = await firestoreAccess
+                              .cancelDeliveryRequest(widget.parcel.trackingID);
+
+                          Navigator.pop(context);
+
+                          if (result == null) {
+                            AppSnackBar.showSnackBar(context,
+                                'The request has been rejected successfully!',
+                                backgroundColor: Colors.green);
+                          } else {
+                            AppSnackBar.showSnackBar(context,
+                                'Error rejecting request: $result');
+                          }
+                        
+                          
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: const Text(
+                          'Reject',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade700, Colors.red.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          dynamic result = await firestoreAccess
+                              .acceptDeliveryOffer(widget.parcel.trackingID);
+
+                          Navigator.pop(context);
+
+                          if (result == null) {
+                            AppSnackBar.showSnackBar(context,
+                                'The request has been accepted successfully!',
+                                backgroundColor: Colors.green);
+                          } else {
+                            AppSnackBar.showSnackBar(context,
+                                'Error accepting request: $result');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: const Text(
+                          'Accept',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
         ),

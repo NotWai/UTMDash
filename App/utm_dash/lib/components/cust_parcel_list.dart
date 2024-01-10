@@ -119,8 +119,7 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                   .getRequesteStatusStream(
                                                       parcel.trackingID),
                                               builder: (context, snapshot) {
-                                                if (snapshot
-                                                        .connectionState ==
+                                                if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
                                                   return const Center(
                                                       child:
@@ -164,9 +163,18 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                     child: const Text(
                                                         'View offer'),
                                                   );
+                                                } else if (status ==
+                                                    'Accepted') {
+                                                  return Text(
+                                                    'Parcel will be delivered in: \n$requestedDate',
+                                                    textAlign: TextAlign.right,
+                                                    style: const TextStyle(
+                                                        color: Colors.grey),
+                                                  );
                                                 }
                                                 return Text(
                                                   'Runner Requested: \n$requestedDate',
+                                                  textAlign: TextAlign.right,
                                                   style: const TextStyle(
                                                       color: Colors.grey),
                                                 );
