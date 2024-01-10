@@ -301,6 +301,13 @@ class DatabaseService {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> get geDeliveredRequests{
+    return deliveryRequestsCollection
+        .where('runnerID', isEqualTo: uid)
+        .where('status', isEqualTo: 'Done')
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> get getAcceptedRequestsByBoth {
     return deliveryRequestsCollection
         .where('runnerID', isEqualTo: uid)
