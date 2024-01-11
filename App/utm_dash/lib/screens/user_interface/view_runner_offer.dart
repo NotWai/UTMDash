@@ -92,6 +92,40 @@ class _ViewRunnerOfferState extends State<ViewRunnerOffer> {
                             'Rate: RM${runner['rate']}',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
+                          const SizedBox(height: 10),
+                          FutureBuilder<Map<String, dynamic>?>(
+                            future: firestoreAccess
+                                .getRunnerRating(request['runnerID']),
+                            builder: (context, snapshot) {
+                              if (ConnectionState.waiting ==
+                                  snapshot.connectionState) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                    child: Text('Error fetching data'));
+                              }
+
+                              final Map<String, dynamic>? ratingMap =
+                                  snapshot.data;
+
+                              if (ratingMap != null) {
+                                final double avgRating = ratingMap['avg'];
+                                final int numberOfRatings =
+                                    ratingMap['numberOfRatings'];
+
+                                return Text(
+                                  'Driver Rating: $avgRating (from $numberOfRatings ratings)',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                );
+                              } else {
+                                return Text(
+                                  'Driver Rating: No ratings available yet!',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                );
+                              }
+                            },
+                          ),
                         ],
                       );
                     },
@@ -131,11 +165,9 @@ class _ViewRunnerOfferState extends State<ViewRunnerOffer> {
                                 'The request has been rejected successfully!',
                                 backgroundColor: Colors.green);
                           } else {
-                            AppSnackBar.showSnackBar(context,
-                                'Error rejecting request: $result');
+                            AppSnackBar.showSnackBar(
+                                context, 'Error rejecting request: $result');
                           }
-                        
-                          
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
@@ -182,8 +214,8 @@ class _ViewRunnerOfferState extends State<ViewRunnerOffer> {
                                 'The request has been accepted successfully!',
                                 backgroundColor: Colors.green);
                           } else {
-                            AppSnackBar.showSnackBar(context,
-                                'Error accepting request: $result');
+                            AppSnackBar.showSnackBar(
+                                context, 'Error accepting request: $result');
                           }
                         },
                         style: ElevatedButton.styleFrom(

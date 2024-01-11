@@ -481,4 +481,119 @@ class DatabaseService {
       return null;
     }
   }
+
+  Future<DocumentSnapshot<Object?>?> fetchRunnerDetails(String runnerID) async {
+    try {
+      final docRef = await usersCollection.doc(runnerID).get();
+
+      if (docRef.exists) {
+        return docRef;
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error fetching delivery request: ${e.message}');
+      return null;
+    }
+  }
+
+  Future<String?> rateRunner(String runnerID, double userRating) async {
+    try {
+      final docRef = usersCollection.doc(runnerID);
+
+      final runnerDoc = await docRef.get();
+
+      final Map<String, dynamic>? existingRatingMap =
+          (runnerDoc.data() as Map<String, dynamic>?)?['rating'];
+
+      int numberOfRatings =
+          (existingRatingMap?['numberOfRatings'] as int?) ?? 0;
+      double currentAvg = (existingRatingMap?['avg'] as double?) ?? 0.0;
+
+      numberOfRatings++;
+      final double newAvg =
+          ((currentAvg * (numberOfRatings - 1)) + userRating) / numberOfRatings;
+
+      await docRef.update({
+        'rated': true,
+        'rating': {
+          'avg': newAvg,
+          'numberOfRatings': numberOfRatings,
+        },
+      });
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> checkRateStatus(String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final documentRef =
+            deliveryRequestsCollection.doc(querySnapshot.docs.first.id);
+        final documentData =
+            querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+        bool rated = documentData['rated'] ?? false;
+
+        if (!documentData.containsKey('rated')) {
+          await documentRef.update({'rated': false});
+        }
+
+        return rated ? 'true' : 'false';
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error checking rate status: ${e.message}');
+      return null;
+    }
+  }
+
+  Future<void> updateRateStatus(String trackingID) async {
+    try {
+      final querySnapshot = await deliveryRequestsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'rated': true,
+        });
+      }
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future<Map<String, dynamic>?> getRunnerRating(String runnerID) async {
+    try {
+      final docRef = usersCollection.doc(runnerID);
+      final runnerDoc = await docRef.get();
+
+      if (runnerDoc.exists) {
+        final Map<String, dynamic>? existingRatingMap =
+            (runnerDoc.data() as Map<String, dynamic>?)?['rating'];
+
+        if (existingRatingMap != null) {
+          return existingRatingMap;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      print('Error fetching runner rating: ${e.message}');
+      return null;
+    }
+  }
 }

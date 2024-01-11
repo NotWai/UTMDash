@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utm_dash/models/parcels.dart';
+import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/screens/user_interface/rate_runner.dart';
 import 'package:utm_dash/services/f_database.dart';
 
 class CustomParcelListView extends StatefulWidget {
@@ -362,20 +364,83 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       10, 0, 30, 0),
-                                  child: Text(
-                                    'Runner Name',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                                  child: FutureBuilder<UserData>(
+                                    future: DatabaseService(
+                                            uid: deliveryRequest['runnerID'])
+                                        .userDataStream
+                                        .first,
+                                    builder: (context, snapshot) {
+                                      if (ConnectionState.waiting ==
+                                          snapshot.connectionState) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                      final runner = snapshot.data;
+                                      if (snapshot.hasError || runner == null) {
+                                        return const Text(
+                                            'Error fetching data');
+                                      }
+
+                                      return Text(
+                                        runner.fullName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      );
+                                    },
                                   ),
                                 ),
-                                Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            100, 0, 10, 0),
-                                    child: ElevatedButton(
-                                      onPressed: () async {},
-                                      child: const Text('Rate Runner'),
-                                    )),
+                                FutureBuilder<String?>(
+                                  future: widget.firestoreAccess
+                                      .checkRateStatus(
+                                          widget.parcel.trackingID),
+                                  builder: (context, snapshot) {
+                                    if (ConnectionState.waiting ==
+                                        snapshot.connectionState) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    final rated = snapshot.data;
+                                    if (snapshot.hasError ||
+                                        rated == null ||
+                                        snapshot.data == null) {
+                                      return const Text('Error fetching data');
+                                    }
+
+                                    if (rated == 'true') {
+                                      return const Text(
+                                        'Already Rated',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      );
+                                    }
+
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              40, 0, 10, 0),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => RateRunner(
+                                                runnerID:
+                                                    deliveryRequest['runnerID'],
+                                                trackingID:
+                                                    widget.parcel.trackingID,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('Rate Runner'),
+                                      ),
+                                    );
+                                  },
+                                )
                               ],
                             ),
                           ),
