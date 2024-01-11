@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/screens/hub_interface/hub_view_record.dart';
 import 'package:utm_dash/screens/profile/edit_profile.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/screens/runner_interface/runner_history.dart';
@@ -276,7 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const RunnerHomepage()));
+                                        const ViewRecordHub()));
                           }
                         },
                         child: const Icon(

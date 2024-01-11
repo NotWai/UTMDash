@@ -271,20 +271,22 @@ class _HubHomepageState extends State<HubHomepage> {
                                                   _buildDetailRow('Arrived',
                                                       parcelObj?.arrived ?? ''),
                                                   const SizedBox(height: 10.0),
-                                                  _buildDetailRow('Dateline',
-                                                      parcelObj?.deadline ?? ''),
+                                                  _buildDetailRow(
+                                                      'Dateline',
+                                                      parcelObj?.deadline ??
+                                                          ''),
                                                   const SizedBox(height: 10.0),
-                                                  _buildDetailRow('Status',
-                                                      parcelObj?.status ?? ''),
+                                                  _buildDetailRow(
+                                                      'Tracking Number',
+                                                      parcelObj?.trackingID ??
+                                                          ''),
                                                   const SizedBox(height: 20.0),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
                                                       ElevatedButton(
-                                                        onPressed: () {
-                                                          // Handle request runner action
-                                                        },
+                                                        onPressed: () {},
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           backgroundColor:
@@ -298,7 +300,7 @@ class _HubHomepageState extends State<HubHomepage> {
                                                           ),
                                                         ),
                                                         child: const Text(
-                                                          'Change State',
+                                                          'Received By Hand',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white),
@@ -342,7 +344,7 @@ class _HubHomepageState extends State<HubHomepage> {
                                   },
                                   child: Container(
                                     width: 50,
-                                    height: 50,
+                                    height: 90,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       boxShadow: const [
@@ -355,31 +357,62 @@ class _HubHomepageState extends State<HubHomepage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
+                                      padding: const EdgeInsets.all(15),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            userData.fullName,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 7),
-                                          Flexible(
-                                            child: Align(
-                                              alignment:
-                                                  const AlignmentDirectional(
-                                                      1, 0),
-                                              child: Text(
-                                                displayText,
-                                                style: TextStyle(
-                                                  color: textColor,
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Text(
+                                                userData.fullName,
+                                                style: const TextStyle(
                                                   fontSize: 16,
+                                                  color: Colors.black,
                                                 ),
                                               ),
-                                            ),
+                                              const SizedBox(height: 7),
+                                              Flexible(
+                                                child: Align(
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          1, 0),
+                                                  child: Text(
+                                                    displayText,
+                                                    style: TextStyle(
+                                                      color: textColor,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 11),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Text(
+                                                userData.phoneNumber,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 7),
+                                              Flexible(
+                                                child: Align(
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          1, 0),
+                                                  child: Text(
+                                                    parcel['trackingID'],
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

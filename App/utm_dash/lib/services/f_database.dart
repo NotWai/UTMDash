@@ -151,6 +151,32 @@ class DatabaseService {
     });
   }
 
+  Stream<List<ParcelObject>> get getDeliveredParcelsForHub {
+    return parcelsCollection
+        .orderBy('deadline', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => _parcelObjectFromSnapshot(doc))
+          .where((parcel) =>
+              parcel.status == 'Delivered' || parcel.status == 'Picked Up')
+          .toList();
+    });
+  }
+
+  Stream<List<ParcelObject>> get getPendingParcelsForHub {
+    return parcelsCollection
+        .orderBy('deadline', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => _parcelObjectFromSnapshot(doc))
+          .where((parcel) =>
+              parcel.status != 'Delivered' && parcel.status != 'Picked Up')
+          .toList();
+    });
+  }
+
   Future<ParcelObject?> getParcelDetails(String trackingID) async {
     try {
       final querySnapshot = await parcelsCollection
