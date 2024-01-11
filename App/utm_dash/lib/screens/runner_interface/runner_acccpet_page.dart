@@ -329,7 +329,7 @@ class _RunnerAcceptState extends State<RunnerAccept> {
                                           dynamic result = await firestoreAccess
                                               .acceptDeliveryRequest(
                                                   widget.request.id,
-                                                  'Accepted by Runner');
+                                                  'Accepted by Runner', widget.request['receiverID']);
                                           if (context.mounted) {
                                             Navigator.of(context).pop();
                                           }

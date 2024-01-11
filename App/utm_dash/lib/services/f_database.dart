@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
 import 'package:intl/intl.dart';
+import 'package:utm_dash/API/firebase_api.dart';
 
 class DatabaseService {
   final String uid;
@@ -19,7 +20,14 @@ class DatabaseService {
   final CollectionReference deliveryRequestsCollection =
       FirebaseFirestore.instance.collection('DeliveryRequests');
 
-  // update Function:
+  Future<void> updateFcmToken(String fcmToken) async {
+    try {
+      await usersCollection.doc(uid).update({'FCMToken': fcmToken});
+    } catch (e) {
+      print('Error updating FCM token: $e');
+    }
+  }
+
   Future updateUserData(String fullName, String phoneNumber) async {
     return await usersCollection.doc(uid).update({
       'fullName': fullName,
@@ -288,7 +296,8 @@ class DatabaseService {
         .snapshots();
   }
 
-  Future<String?> acceptDeliveryRequest(String docID, String status) async {
+  Future<String?> acceptDeliveryRequest(
+      String docID, String status, String receiverID) async {
     try {
       final receiverDocRef = deliveryRequestsCollection.doc(docID);
 
@@ -296,6 +305,28 @@ class DatabaseService {
         'status': status,
         'runnerID': uid,
       });
+
+      final receivedUserDoc = await usersCollection.doc(receiverID).get();
+
+      if (receivedUserDoc.exists) {
+        final fcmToken = receivedUserDoc['FCMToken'] as String?;
+
+
+        if (fcmToken != null) {
+          final firebaseAPI =
+              FirebaseAPI();
+          await firebaseAPI.sendMessage(
+            fcmToken: fcmToken,
+            title: 'Delivery Request Accepted',
+            body: 'Your delivery request has been accepted by the runner.',
+          );
+        } else {
+          return 'Error: Receiver does not have a valid FCM token.';
+        }
+      } else {
+        return 'Error: Receiver does not exist.';
+      }
+
       return null;
     } on FirebaseException catch (e) {
       return e.message;

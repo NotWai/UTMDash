@@ -4,7 +4,6 @@ import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:utm_dash/screens/notification_page.dart';
 import 'package:utm_dash/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         routes: {
-          '/notification_screen': (context) => const NotificationPage(),
+          '/home': (context) => const SplashScreen(),
         },
         home: const SplashScreen(),
       ),

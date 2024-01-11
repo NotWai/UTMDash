@@ -21,12 +21,39 @@ class FirebaseAPI {
 
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
-    navigatorKey.currentState
-        ?.pushNamed('/notification_screen', arguments: message);
+    navigatorKey.currentState?.pushNamed('/home', arguments: message);
   }
 
   Future initPushNotification() async {
-    _firebaseMessage.getInitialMessage().then(handleMessage);
+    _firebaseMessage.getInitialMessage().then((message) {
+      print('Initial Message: $message');
+      handleMessage(message);
+    });
+
+    FirebaseMessaging.onMessage.listen((message) {
+      print('Received Message: $message');
+      handleMessage(message);
+    });
+
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+  }
+
+  Future<void> sendMessage({
+    required String fcmToken,
+    required String title,
+    required String body,
+  }) async {
+    try {
+      await _firebaseMessage.sendMessage(
+        to: fcmToken,
+        data: {
+          'title': title,
+          'body': body,
+        },
+      );
+      print('Message sent successfully.');
+        } catch (e) {
+      print('Error sending message: $e');
+    }
   }
 }
