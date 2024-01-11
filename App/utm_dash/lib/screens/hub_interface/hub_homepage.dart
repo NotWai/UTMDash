@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:utm_dash/components/cust_snackbar.dart';
 import 'package:utm_dash/screens/hub_interface/hub_add_parcel.dart';
 import 'package:utm_dash/models/parcels.dart';
 import 'package:utm_dash/models/user.dart';
@@ -286,7 +287,28 @@ class _HubHomepageState extends State<HubHomepage> {
                                                         MainAxisAlignment.end,
                                                     children: [
                                                       ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () async {
+                                                          dynamic result =
+                                                              await firestoreAccess
+                                                                  .pickedUpParcelStatus(
+                                                                      parcel[
+                                                                          'trackingID']);
+                                                          Navigator.pop(
+                                                              context);
+                                                          if (result == null) {
+                                                            AppSnackBar.showSnackBar(
+                                                                context,
+                                                                'Parcel status updated successfully',
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .green);
+                                                          } else {
+                                                            AppSnackBar
+                                                                .showSnackBar(
+                                                                    context,
+                                                                    'Error updating parcel status');
+                                                          }
+                                                        },
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           backgroundColor:

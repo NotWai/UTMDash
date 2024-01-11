@@ -470,6 +470,26 @@ class DatabaseService {
     }
   }
 
+  Future<String?> pickedUpParcelStatus(String trackingID) async {
+    try {
+      final querySnapshot = await parcelsCollection
+          .where('trackingID', isEqualTo: trackingID)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({
+          'status': 'Picked Up',
+          'runnerID': '',
+        });
+      }
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+  }
+
   Future<void> updateParcelStatus(String trackingID) async {
     try {
       final querySnapshot = await parcelsCollection
