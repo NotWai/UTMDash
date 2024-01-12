@@ -89,7 +89,7 @@ class _ViewRunnerOfferState extends State<ViewRunnerOffer> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'Rate: RM${runner['rate']}',
+                            'Plate Number: ${runner['plateNumber']}',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: 10),

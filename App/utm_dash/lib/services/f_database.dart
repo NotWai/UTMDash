@@ -597,7 +597,6 @@ class DatabaseService {
           ((currentAvg * (numberOfRatings - 1)) + userRating) / numberOfRatings;
 
       await docRef.update({
-        'rated': true,
         'rating': {
           'avg': newAvg,
           'numberOfRatings': numberOfRatings,

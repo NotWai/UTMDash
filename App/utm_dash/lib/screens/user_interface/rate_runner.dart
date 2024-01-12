@@ -154,7 +154,7 @@ class _RateRunnerState extends State<RateRunner> {
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
                     child: Text(
-                      'Price Rate',
+                      'Plate Number',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontFamily: 'Inter',
                             color: const Color(0xFFBDC0C0),
@@ -168,7 +168,7 @@ class _RateRunnerState extends State<RateRunner> {
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 10),
                     child: Text(
-                      'RM${runner['rate']}',
+                      runner['plateNumber'],
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontFamily: 'Inter',
@@ -251,7 +251,6 @@ class _RateRunnerState extends State<RateRunner> {
                       } else {
                         AppSnackBar.showSnackBar(context, result);
                       }
-                      
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
