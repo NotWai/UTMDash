@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:utm_dash/screens/user_interface/user_home_page.dart';
 import 'package:utm_dash/screens/profile/profile_screen.dart';
+import 'package:utm_dash/screens/user_interface/user_activity.dart';
+import 'package:utm_dash/screens/user_interface/user_homepage.dart';
 import 'package:utm_dash/screens/user_interface/user_notification.dart';
 
 class CustomerWrapper extends StatefulWidget {
@@ -19,7 +20,8 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      HomePageUser(),
+      UserHomePage(),
+      UserParcelsActivity(),
       UserNotification(),
       ProfileScreen(),
     ];
@@ -43,17 +45,22 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
             padding: EdgeInsets.all(16),
             tabs: [
               GButton(
-                gap: 8,
+                gap: 5,
                 icon: Icons.home,
                 text: 'Home',
               ),
               GButton(
-                gap: 8,
+                gap: 5,
+                icon: Icons.delivery_dining_rounded,
+                text: 'Activity',
+              ),
+              GButton(
+                gap: 5,
                 icon: Icons.notifications,
                 text: 'Notifications',
               ),
               GButton(
-                gap: 8,
+                gap: 5,
                 icon: Icons.person,
                 text: 'Profile',
               ),

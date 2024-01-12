@@ -73,7 +73,7 @@ class _UserParcelsHistoryState extends State<UserParcelsHistory> {
             itemCount: parcels.length,
             itemBuilder: (context, index) {
               final parcel = parcels[index];
-              return CustomParcelListView(
+              return CustomParcelListViewHistory(
                   firestoreAccess: firestoreAccess, parcel: parcel);
             },
           );

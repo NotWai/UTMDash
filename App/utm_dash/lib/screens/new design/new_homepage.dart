@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 
-class UserHomepage extends StatefulWidget {
-  const UserHomepage({super.key});
+class NewHomePage extends StatefulWidget {
+  const NewHomePage({super.key});
 
   @override
-  State<UserHomepage> createState() => _UserHomepageState();
+  State<NewHomePage> createState() => _NewHomePageState();
 }
 
-class _UserHomepageState extends State<UserHomepage> {
+class _NewHomePageState extends State<NewHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late TextEditingController textController;

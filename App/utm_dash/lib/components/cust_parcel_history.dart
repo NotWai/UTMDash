@@ -4,20 +4,20 @@ import 'package:utm_dash/models/user.dart';
 import 'package:utm_dash/screens/user_interface/rate_runner.dart';
 import 'package:utm_dash/services/f_database.dart';
 
-class CustomParcelListView extends StatefulWidget {
+class CustomParcelListViewHistory extends StatefulWidget {
   final ParcelObject parcel;
   final DatabaseService firestoreAccess;
-  const CustomParcelListView({
+  const CustomParcelListViewHistory({
     super.key,
     required this.firestoreAccess,
     required this.parcel,
   });
 
   @override
-  State<CustomParcelListView> createState() => _CustomParcelListViewState();
+  State<CustomParcelListViewHistory> createState() => _CustomParcelListViewStateHistory();
 }
 
-class _CustomParcelListViewState extends State<CustomParcelListView> {
+class _CustomParcelListViewStateHistory extends State<CustomParcelListViewHistory> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ParcelObject>>(
