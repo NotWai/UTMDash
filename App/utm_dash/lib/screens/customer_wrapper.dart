@@ -27,7 +27,7 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
     return Scaffold(
       body: _pages[currentIndex],
       bottomNavigationBar: Container(
-        color: Colors.red[800],
+        color: Color(0xFFBE1C2D),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: GNav(
@@ -64,4 +64,3 @@ class _CustomerWrapperState extends State<CustomerWrapper> {
     );
   }
 }
-
