@@ -131,37 +131,115 @@ class _CustomParcelListViewState extends State<CustomParcelListView> {
                                                 final status = snapshot.data;
 
                                                 if (requestedDate == null) {
-                                                  return ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              RequestDeliveryPage(
-                                                                  parcel:
-                                                                      parcel),
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.red.shade700,
+                                                          Colors.red.shade400
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.5),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 7,
+                                                          offset: const Offset(
+                                                              0, 3),
                                                         ),
-                                                      );
-                                                    },
-                                                    child: const Text(
-                                                        'Request Runner'),
+                                                      ],
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                RequestDeliveryPage(
+                                                                    parcel:
+                                                                        parcel),
+                                                          ),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        elevation: 0,
+                                                        shadowColor:
+                                                            Colors.transparent,
+                                                      ),
+                                                      child: const Text(
+                                                        'Request Runner',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   );
                                                 } else if (status ==
                                                     'Accepted by Runner') {
-                                                  return ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ViewRunnerOffer(
-                                                                  parcel:
-                                                                      parcel),
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.green.shade700,
+                                                          Colors.green.shade400
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.5),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 7,
+                                                          offset: const Offset(
+                                                              0, 3),
                                                         ),
-                                                      );
-                                                    },
-                                                    child: const Text(
-                                                        'View offer'),
+                                                      ],
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ViewRunnerOffer(
+                                                                    parcel:
+                                                                        parcel),
+                                                          ),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        elevation: 0,
+                                                        shadowColor:
+                                                            Colors.transparent,
+                                                      ),
+                                                      child: const Text(
+                                                        'View Offer',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   );
                                                 } else if (status ==
                                                     'Accepted') {

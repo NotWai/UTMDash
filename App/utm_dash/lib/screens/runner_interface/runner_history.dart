@@ -54,7 +54,7 @@ class _RunnerHistoryState extends State<RunnerHistory> {
       ),
       body: Container(
         width: MediaQuery.sizeOf(context).width,
-        height: MediaQuery.sizeOf(context).height * 0.3,
+        height: MediaQuery.sizeOf(context).height * 0.8,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
         ),

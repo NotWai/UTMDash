@@ -68,112 +68,229 @@ class _UpdateDeliveryPageState extends State<UpdateDeliveryPage> {
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: Form(
           key: _formkey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FutureBuilder<UserData>(
-                future: firestoreAccess.userDataStream.first,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  UserData userData = snapshot.data!;
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Name: ${widget.parcel.fromName}'),
-                        Text('Phone Number: ${userData.phoneNumber}'),
-                        Text('Tracking ID: ${widget.parcel.trackingID}'),
-                      ]);
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text('Time of Delivery:'),
-              TextButton(
-                onPressed: () => _selectDateAndTime(context, firestoreAccess),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.grey),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FutureBuilder<UserData>(
+                  future: firestoreAccess.userDataStream.first,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    UserData userData = snapshot.data!;
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Name: ${widget.parcel.fromName}',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          Text('Phone Number: ${userData.phoneNumber}',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          Text('Tracking ID: ${widget.parcel.trackingID}',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                        ]);
+                  },
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: selectedDateTime != null
-                      ? Text(
-                          'Selected Date and Time: ${DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime!)}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
+                const SizedBox(height: 20),
+                Text(
+                  'Time of Delivery:',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () =>
+                          _selectDateAndTime(context, firestoreAccess),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red.shade400),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.all(5.0)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: selectedDateTime != null
+                            ? Text(
+                                'Selected Date and Time: ${DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime!)}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                ),
+                              )
+                            : const Text(
+                                'Select Date and Time',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Delivery Address',
+                      labelStyle: const TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Colors.red.shade700),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Colors.red.shade700),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    validator: (val) =>
+                        val!.isEmpty ? 'Please enter a delivery address' : null,
+                    controller: _deliveryAddressController,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Notes (Optional)',
+                      labelStyle: const TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Colors.red.shade700),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Colors.red.shade700),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    controller: _notesController,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade700, Colors.red.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
                           ),
-                        )
-                      : const Text(
-                          'Select Date and Time',
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formkey.currentState!.validate()) {
+                            if (selectedDateTime == null) {
+                              AppSnackBar.showSnackBar(
+                                  context, 'Please select a date and time');
+                            } else {
+                              dynamic result =
+                                  await firestoreAccess.updateDeliveryRequest(
+                                      widget.parcel.trackingID,
+                                      _deliveryAddressController.text,
+                                      _notesController.text,
+                                      selectedDateTime!);
+                              if (result == null) {
+                                AppSnackBar.showSnackBar(context,
+                                    'Delivery request has been updated',
+                                    backgroundColor: Colors.green);
+                                Navigator.pop(context);
+                              } else {
+                                AppSnackBar.showSnackBar(context, result);
+                              }
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: const Text(
+                          'Update Request',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14.0,
                           ),
                         ),
-                ),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Delivery Address',
-                ),
-                validator: (val) =>
-                    val!.isEmpty ? 'Please enter a delivery address' : null,
-                controller: _deliveryAddressController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Notes (Optional)',
-                ),
-                controller: _notesController,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formkey.currentState!.validate()) {
-                        if (selectedDateTime == null) {
-                          AppSnackBar.showSnackBar(
-                              context, 'Please select a date and time');
-                        } else {
-                          dynamic result =
-                              await firestoreAccess.updateDeliveryRequest(widget.parcel.trackingID, _deliveryAddressController.text, _notesController.text, selectedDateTime!);
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade700, Colors.red.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          dynamic result = await firestoreAccess
+                              .deleteDeliveryRequest(widget.parcel.trackingID);
                           if (result == null) {
-                            AppSnackBar.showSnackBar(context,
-                                'Delivery request has been updated',
+                            AppSnackBar.showSnackBar(
+                                context, 'Delivery request has been deleted',
                                 backgroundColor: Colors.green);
                             Navigator.pop(context);
                           } else {
                             AppSnackBar.showSnackBar(context, result);
                           }
-                        }
-                      }
-                    },
-                    child: const Text('Update Request'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      dynamic result = await firestoreAccess
-                          .deleteDeliveryRequest(widget.parcel.trackingID);
-                      if (result == null) {
-                        AppSnackBar.showSnackBar(
-                            context, 'Delivery request has been deleted',
-                            backgroundColor: Colors.green);
-                        Navigator.pop(context);
-                      } else {
-                        AppSnackBar.showSnackBar(context, result);
-                      }
-                    },
-                    child: const Text('Delete the request'),
-                  ),
-                ],
-              ),
-            ],
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: const Text(
+                          'Delete the request',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
