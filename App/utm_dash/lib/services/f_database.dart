@@ -232,6 +232,8 @@ class DatabaseService {
         'arrived': time1,
         'deadline': time2,
       });
+      await addNotification(
+          receiverUid, 'We\'ve received a new parcel from $senderName');
       return null;
     } on FirebaseException catch (e) {
       return e.message;
@@ -306,15 +308,15 @@ class DatabaseService {
         'runnerID': uid,
       });
 
+      addNotification(receiverID, 'You have a new delivery offer!');
+
       final receivedUserDoc = await usersCollection.doc(receiverID).get();
 
       if (receivedUserDoc.exists) {
         final fcmToken = receivedUserDoc['FCMToken'] as String?;
 
-
         if (fcmToken != null) {
-          final firebaseAPI =
-              FirebaseAPI();
+          final firebaseAPI = FirebaseAPI();
           await firebaseAPI.sendMessage(
             fcmToken: fcmToken,
             title: 'Delivery Request Accepted',
@@ -461,7 +463,8 @@ class DatabaseService {
     }
   }
 
-  Future<String?> doneDeliveryRequest(String trackingID) async {
+  Future<String?> doneDeliveryRequest(
+      String trackingID, String receiverUid) async {
     try {
       final querySnapshot = await deliveryRequestsCollection
           .where('trackingID', isEqualTo: trackingID)
@@ -472,7 +475,9 @@ class DatabaseService {
         await querySnapshot.docs.first.reference.update({
           'status': 'Done',
         });
-        doneParcelStatus(trackingID);
+        await doneParcelStatus(trackingID);
+        await addNotification(receiverUid,
+            'Delivery request for $trackingID has been completed!');
       }
 
       return null;
@@ -670,6 +675,35 @@ class DatabaseService {
       }
     } on FirebaseException catch (e) {
       print('Error fetching runner rating: ${e.message}');
+      return null;
+    }
+  }
+
+  String formatDateTime(Timestamp timestamp) {
+    final dateTime = timestamp.toDate();
+    final formattedTimestamp = DateFormat('dd MMM, hh:mma').format(dateTime);
+    return formattedTimestamp;
+  }
+
+  Future<void> addNotification(String userId, String notification) async {
+    final userNotificationsRef =
+        usersCollection.doc(userId).collection('notifications');
+
+    await userNotificationsRef.add({
+      'notification': notification,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>? get getNotificationsStream {
+    try {
+      return usersCollection
+          .doc(uid)
+          .collection('notifications')
+          .orderBy('timestamp', descending: true)
+          .snapshots();
+    } on FirebaseException catch (e) {
+      print('Error fetching notifications: ${e.message}');
       return null;
     }
   }

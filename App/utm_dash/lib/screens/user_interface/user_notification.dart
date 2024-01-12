@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:utm_dash/models/user.dart';
+import 'package:utm_dash/services/f_database.dart';
 
 class UserNotification extends StatefulWidget {
   const UserNotification({super.key});
@@ -10,8 +14,10 @@ class UserNotification extends StatefulWidget {
 class _UserNotificationState extends State<UserNotification> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserClass?>(context);
+    final firestoreAccess = DatabaseService(uid: user!.uid);
     return Scaffold(
-      backgroundColor: Color(0xFFF6F6F6),
+      backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
         backgroundColor: const Color(0xFFBE1C2D),
         title: const Text(
@@ -23,19 +29,34 @@ class _UserNotificationState extends State<UserNotification> {
           ),
         ),
       ),
-      body: Builder(
-        builder: (context) {
-          return ListView(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: firestoreAccess.getNotificationsStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final notifications = snapshot.data!.docs;
+          if (snapshot.data == null || notifications.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.all(25),
+              child: Text('No Notifications yet...'),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final notification = notifications[index];
+              return Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         blurRadius: 0,
                         color: Color(0xFFE0E3E7),
@@ -46,7 +67,7 @@ class _UserNotificationState extends State<UserNotification> {
                     shape: BoxShape.rectangle,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -54,17 +75,17 @@ class _UserNotificationState extends State<UserNotification> {
                           width: 4,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Color(0xFFBE3947),
+                            color: const Color(0xFFBE3947),
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                12, 0, 0, 0),
                             child: Text(
-                              '[New message]',
-                              style: TextStyle(
+                              notification['notification'],
+                              style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -72,10 +93,12 @@ class _UserNotificationState extends State<UserNotification> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                           child: Text(
-                            '[Date, Time]',
-                            style: TextStyle(
+                            firestoreAccess
+                                .formatDateTime(notification['timestamp']),
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                               color: Color(0xFF5A5C60),
@@ -86,65 +109,8 @@ class _UserNotificationState extends State<UserNotification> {
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 0,
-                        color: Color(0xFFE0E3E7),
-                        offset: Offset(0, 1),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(0),
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFE0E3E7),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Text(
-                              '[This message hase been read]',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Text(
-                            '[Date, Time]',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
+              );
+            },
           );
         },
       ),

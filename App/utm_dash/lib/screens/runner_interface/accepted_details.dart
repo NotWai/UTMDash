@@ -265,7 +265,8 @@ class _AcceptedDetailsState extends State<AcceptedDetails> {
                         onPressed: () async {
                           dynamic result =
                               await firestoreAccess.doneDeliveryRequest(
-                                  widget.request['trackingID']);
+                                  widget.request['trackingID'],
+                                  widget.request['receiverID']);
 
                           if (result == null) {
                             AppSnackBar.showSnackBar(context,
