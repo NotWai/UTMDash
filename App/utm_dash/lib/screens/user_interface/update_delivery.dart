@@ -65,7 +65,7 @@ class _UpdateDeliveryPageState extends State<UpdateDeliveryPage> {
         title: const Text('Request Delivery'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 38),
         child: Form(
           key: _formkey,
           child: SingleChildScrollView(
@@ -86,12 +86,99 @@ class _UpdateDeliveryPageState extends State<UpdateDeliveryPage> {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Name: ${widget.parcel.fromName}',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          Text('Phone Number: ${userData.phoneNumber}',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          Text('Tracking ID: ${widget.parcel.trackingID}',
-                              style: Theme.of(context).textTheme.bodyLarge),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 0, 5),
+                              child: Text(
+                                'Runner Name',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Text(
+                              widget.parcel.fromName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    color: Colors.black,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 0, 5),
+                              child: Text(
+                                'Phone Number',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Text(
+                              userData.phoneNumber,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    color: Colors.black,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 0, 5),
+                              child: Text(
+                                'Tracking ID',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Text(
+                              widget.parcel.trackingID,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    color: Colors.black,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
                         ]);
                   },
                 ),

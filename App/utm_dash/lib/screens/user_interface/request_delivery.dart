@@ -64,7 +64,7 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
         title: const Text('Request Delivery'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30),
         child: Form(
           key: _formkey,
           child: SingleChildScrollView(
@@ -83,21 +83,103 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
                     }
                     UserData userData = snapshot.data!;
                     return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Name: ${widget.parcel.fromName}',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 0, 5),
+                            child: Text(
+                              'Runner Name',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
-                          Text(
-                            'Phone Number: ${userData.phoneNumber}',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Text(
+                            widget.parcel.fromName,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontFamily: 'Inter',
+                                  color: Colors.black,
+                                ),
                           ),
-                          Text(
-                            'Tracking ID: ${widget.parcel.trackingID}',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 0, 5),
+                            child: Text(
+                              'Phone Number',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
-                        ]);
+                        ),
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Text(
+                            userData.phoneNumber,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontFamily: 'Inter',
+                                  color: Colors.black,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 0, 0, 5),
+                            child: Text(
+                              'Tracking ID',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: const AlignmentDirectional(-1, 0),
+                          child: Text(
+                            widget.parcel.trackingID,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontFamily: 'Inter',
+                                  color: Colors.black,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    );
                   },
                 ),
                 const SizedBox(height: 30),
@@ -170,7 +252,7 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Notes (Optional)',
+                      labelText: 'Notes to Runner (If Any)',
                       labelStyle: const TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
