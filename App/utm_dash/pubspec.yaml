@@ -26,6 +26,7 @@ dependencies:
   url_launcher: ^6.2.2
   awesome_notifications: ^0.8.3
   flutter_rating_bar: ^4.0.1
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:
