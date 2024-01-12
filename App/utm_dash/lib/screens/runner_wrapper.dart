@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:utm_dash/screens/profile/profile_screen.dart';
 import 'package:utm_dash/screens/runner_interface/requests_page.dart';
+import 'package:utm_dash/screens/runner_interface/runner_delivery.dart';
 import 'package:utm_dash/screens/runner_interface/runner_homepage.dart';
 
 class RunnerWrapper extends StatefulWidget {
@@ -21,6 +22,7 @@ class _RunnerWrapperState extends State<RunnerWrapper> {
     List<Widget> _pages = [
       RunnerHomepage(),
       AcceptedRequestsPage(),
+      RunnerDeliveryPage(),
       ProfileScreen(),
     ];
 
@@ -54,6 +56,11 @@ class _RunnerWrapperState extends State<RunnerWrapper> {
               ),
               GButton(
                 gap: 8,
+                icon: Icons.delivery_dining_rounded,
+                text: 'Delivery',
+              ),
+              GButton(
+                gap: 8,
                 icon: Icons.person,
                 text: 'Profile',
               ),
@@ -64,4 +71,3 @@ class _RunnerWrapperState extends State<RunnerWrapper> {
     );
   }
 }
-
