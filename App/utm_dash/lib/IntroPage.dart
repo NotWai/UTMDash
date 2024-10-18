@@ -8,6 +8,8 @@ class IntroPage extends StatefulWidget {
   _IntroPageState createState() => _IntroPageState();
 }
 
+// hasya
+
 class _IntroPageState extends State<IntroPage> {
   final List<String> images = [
     "assets/images/UTMDASH_LOGO.png",
